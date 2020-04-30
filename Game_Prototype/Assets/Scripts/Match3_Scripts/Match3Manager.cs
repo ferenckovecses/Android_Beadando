@@ -355,7 +355,7 @@ public class Match3Manager : MonoBehaviour
                         usedPieceList.Add(tempPiece);
 
                         //Növeljük az adott típus counterét
-                        BattleManager.IncreasePoints(tempPiece.typeValue);
+                        ScoreController.IncreasePoints(tempPiece.typeValue);
                     }
                     //Kinullázzuk az adott cellához tartozó piece-t
                     cell.AddPieceToCell(null);

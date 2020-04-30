@@ -10,6 +10,16 @@ public class Player_Movement_Controller : MonoBehaviour
 
     Vector2 movement;
 
+    public void AddPlayer(Character_Controller player)
+    {
+        this.player = player;
+    }
+
+    public void AddJoystick(Joystick joystick)
+    {
+        this.joystick = joystick;
+    }
+
     //Input
     void Update()
     {

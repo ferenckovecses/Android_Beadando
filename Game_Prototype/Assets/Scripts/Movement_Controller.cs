@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Player_Movement_Controller : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    float moveSpeed = 5f;
     public Character_Controller player;
+
     public Joystick joystick;
 
     Vector2 movement;
+
+    Game_Controller gameController;
 
     public void AddPlayer(Character_Controller player)
     {
@@ -65,15 +68,23 @@ public class Player_Movement_Controller : MonoBehaviour
 
     	}
 
-
-        player.animator.SetFloat("Horizontal", movement.x);
-        player.animator.SetFloat("Vertical", movement.y);
-        player.animator.SetFloat("Speed", movement.sqrMagnitude);
+        if(gameController.currentState == GameState.Outworld)
+        {
+            player.animator.SetFloat("Horizontal", movement.x);
+            player.animator.SetFloat("Vertical", movement.y);
+            player.animator.SetFloat("Speed", movement.sqrMagnitude);
+        }
     }
 
     //Movement
     void FixedUpdate()
     {
-    	player.rb.MovePosition(player.rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        if(gameController.currentState == GameState.Outworld)
+    	   player.rb.MovePosition(player.rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+    }
+
+    void Start()
+    {
+        gameController = GameObject.Find("Game").GetComponent<Game_Controller>();
     }
 }

@@ -8,6 +8,7 @@ ScriptsOnlyBuild:
     - Elements
     - FixedJoystick
     - Game_Controller
+    - MainMenu_Controller
     - Match3Manager
     - MoveManager
     - Piece
@@ -21,6 +22,7 @@ ScriptsOnlyBuild:
     - UnityEditor.Tilemaps.GridPaintPaletteWindow
     - UnityEditor.Tilemaps.GridPaintingState
     - UnityEditor.Tilemaps.GridPaletteBrushes
+    - UnityEditor.Tilemaps.GridPalettes
     - UnityEditor.Tilemaps.PaintableSceneViewGrid
     - UnityEditor.Tilemaps.SceneViewGridManager
     - UnityEditor.Tilemaps.TileDragAndDropManager
@@ -45,6 +47,7 @@ ScriptsOnlyBuild:
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.StandaloneInputModule
+    - UnityEngine.UI.Button
     - UnityEngine.UI.CanvasScaler
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
@@ -97,35 +100,39 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12212}
     - Class: 114
-      Script: {instanceID: 12264}
+      Script: {instanceID: 12260}
     - Class: 114
-      Script: {instanceID: 12836}
+      Script: {instanceID: 12266}
     - Class: 114
-      Script: {instanceID: 13194}
+      Script: {instanceID: 12838}
     - Class: 114
-      Script: {instanceID: 13264}
+      Script: {instanceID: 12918}
     - Class: 114
-      Script: {instanceID: 13282}
+      Script: {instanceID: 13196}
     - Class: 114
-      Script: {instanceID: 13358}
+      Script: {instanceID: 13266}
     - Class: 114
-      Script: {instanceID: 13456}
+      Script: {instanceID: 13284}
     - Class: 114
-      Script: {instanceID: 13584}
+      Script: {instanceID: 13360}
     - Class: 114
-      Script: {instanceID: 13644}
+      Script: {instanceID: 13458}
     - Class: 114
-      Script: {instanceID: 13686}
+      Script: {instanceID: 13586}
     - Class: 114
-      Script: {instanceID: 13750}
+      Script: {instanceID: 13646}
     - Class: 114
-      Script: {instanceID: 13852}
+      Script: {instanceID: 13688}
     - Class: 114
-      Script: {instanceID: 13966}
+      Script: {instanceID: 13752}
     - Class: 114
-      Script: {instanceID: 14306}
+      Script: {instanceID: 13854}
     - Class: 114
-      Script: {instanceID: 14310}
+      Script: {instanceID: 13968}
+    - Class: 114
+      Script: {instanceID: 14308}
+    - Class: 114
+      Script: {instanceID: 14312}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -407,6 +414,12 @@ ScriptsOnlyBuild:
     className: SpriteShape
   - hash:
       serializedVersion: 2
+      Hash: 40985a03b53facc26855c71c344c850b
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: MainMenu_Controller
+  - hash:
+      serializedVersion: 2
       Hash: b8a5e8091ab0b8861d2add371082c5e0
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -503,7 +516,7 @@ ScriptsOnlyBuild:
     className: SpriteSkin
   - hash:
       serializedVersion: 2
-      Hash: 81156a00fd561a9b611a00c642c66625
+      Hash: ca755670fa4d20fa6a48ec74887fa626
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player_Movement_Controller
@@ -587,7 +600,7 @@ ScriptsOnlyBuild:
     className: TextMeshProUGUI
   - hash:
       serializedVersion: 2
-      Hash: c24e6039ba7213103a4e5dc8d17dc7cc
+      Hash: 5d2d50bff95c89c5b4f555c238fe302c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Game_Controller

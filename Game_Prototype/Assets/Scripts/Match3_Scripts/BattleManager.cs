@@ -10,13 +10,14 @@ public class BattleManager : MonoBehaviour
     Character player;
     public GameObject scene;
     GameObject activeScene;
-
+    Game_Controller gameController;
     Image playerSprite;
 
     // Start is called before the first frame update
     void Start()
     {
         ScoreController.ResetScore();
+        gameController = GameObject.Find("Game").GetComponent<Game_Controller>();
     }
 
     // Update is called once per frame
@@ -40,6 +41,14 @@ public class BattleManager : MonoBehaviour
         GameObject.Find("Enemy_Sprite").GetComponent<Image>().sprite = enemy.battleSprite;
         GameObject.Find("Player_Name").GetComponent<TMP_Text>().text = player.characterName;
         GameObject.Find("Enemy_Name").GetComponent<TMP_Text>().text = enemy.characterName;
+
+        var escapeButton = GameObject.Find("Escape_Button").GetComponent<Button>();
+        escapeButton.onClick.AddListener(delegate{EscapeBattle();});
+    }
+
+    public void EscapeBattle()
+    {
+        gameController.currentState = GameState.Win;
     }
 
 }

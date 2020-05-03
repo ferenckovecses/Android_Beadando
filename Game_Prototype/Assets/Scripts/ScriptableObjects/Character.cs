@@ -30,9 +30,14 @@ public class Character : ScriptableObject
 		this.experienceCap = level ^ 3;
 	}
 
+	public void setElement(Elements element)
+	{
+		this.element = element;
+	}
+
 	public void setName(string newName)
 	{
-		this.name = newName;
+		this.characterName = newName;
 	}
 
 	public void Init()

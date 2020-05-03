@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState {MainMenu, Creation, Outworld, BattleSetup, Battle, Win, Lose};
+public enum GameState {MainMenu, Character_Creation, World_Creation, Outworld, IngameMenu, BattleSetup, Battle, Win, Lose};
 
 public class Game_Controller : MonoBehaviour
 {
@@ -21,19 +21,26 @@ public class Game_Controller : MonoBehaviour
     GameObject level;
     Character enemy;
 
+    Player_Movement_Controller moveScript;
+    BattleManager battleScript;
     public GameState currentState;
+    public bool needCleanup;
 
     void Start()
     {
+        //Képernyőarányok fixálása
         Screen.SetResolution(1920,1080,true);
+
         //Startnál a menüben kezdünk
         currentState = GameState.MainMenu;
+
+        //Alaphelyzet beállítása
+        needCleanup = false;
     }
 
     void Update()
     {
-        //Amikor először indul a játék akkor létre kell hozni a világot először
-
+        
         if(currentState == GameState.MainMenu)
         {
             if(Outworld.activeSelf)
@@ -42,9 +49,22 @@ public class Game_Controller : MonoBehaviour
             }
         }
 
-        else if(currentState == GameState.Creation)
+        else if(currentState == GameState.Character_Creation)
         {
+            
+        }
+
+        //Amikor indul a játék létre kell hozni a világot
+        else if(currentState == GameState.World_Creation)
+        {
+            //Ha voltunk már a játékban és visszalépünk, akkor feltakarítunk kreálás előtt
+            if(needCleanup)
+            {
+                CleanUp();
+            }
+            //Létrehozza a játékhoz szükséges dolgokat
             Init();
+            //Átváltunk a játék fázisba
             currentState = GameState.Outworld;
         }
         //Outworld fázis
@@ -95,6 +115,7 @@ public class Game_Controller : MonoBehaviour
 
     void Init()
     {
+        enemy = null;
         Outworld.SetActive(true);
         LoadLevel();
         InstantiateCharacter();
@@ -111,7 +132,7 @@ public class Game_Controller : MonoBehaviour
     void InstantiateCharacter()
     {
         //Karakter elhelyezés
-        player = Instantiate(dataController.playerList[0]) as Character_Controller;
+        player = Instantiate(dataController.player[dataController.getPlayerID()]) as Character_Controller;
         player.transform.position = level.transform.Find("SpawnPoint").transform.position;
         player.transform.parent = level.transform;
     }
@@ -119,7 +140,7 @@ public class Game_Controller : MonoBehaviour
     void CreateMoveControl()
     {
         //Movement controller létrehozás
-        Player_Movement_Controller moveScript = MovementController.GetComponent<Player_Movement_Controller>();
+        moveScript = MovementController.GetComponent<Player_Movement_Controller>();
         moveScript.AddPlayer(player);
     }
 
@@ -130,13 +151,28 @@ public class Game_Controller : MonoBehaviour
 
     void StartBattle()
     {
-        BattleManager battleScript = battleController.GetComponent<BattleManager>();
+        battleScript = battleController.GetComponent<BattleManager>();
         battleScript.Init(enemy, player.character);
     }
 
+    void CleanUp()
+    {
+        Destroy(player);
+        Destroy(enemy);
+        Destroy(level);
+        needCleanup = false;
+    }
+
+    //Only for Debug
     public void TriggerBattle()
     {
         currentState = GameState.BattleSetup;
+    }
+
+    public void IngameMenu()
+    {
+        currentState = GameState.IngameMenu;
+
     }
 
 

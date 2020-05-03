@@ -41,6 +41,9 @@ public class BattleManager : MonoBehaviour
         GameObject.Find("Enemy_Sprite").GetComponent<Image>().sprite = enemy.battleSprite;
         GameObject.Find("Player_Name").GetComponent<TMP_Text>().text = player.characterName;
         GameObject.Find("Enemy_Name").GetComponent<TMP_Text>().text = enemy.characterName;
+        GameObject.Find("Player_Type_Image").GetComponent<Image>().sprite = player.element.returnSprite();
+        GameObject.Find("Enemy_Type_Image").GetComponent<Image>().sprite = enemy.element.returnSprite();
+
 
         var escapeButton = GameObject.Find("Escape_Button").GetComponent<Button>();
         escapeButton.onClick.AddListener(delegate{EscapeBattle();});

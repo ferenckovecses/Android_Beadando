@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Air
   m_EditorClassIdentifier: 
   elementName: Air
-  sprite: {fileID: -7105913188517789750, guid: 34f6321b206afab459fb7c8d37989456, type: 3}
-  value: 0
+  sprite: {fileID: -488248382649040768, guid: 34f6321b206afab459fb7c8d37989456, type: 3}
+  value: 1

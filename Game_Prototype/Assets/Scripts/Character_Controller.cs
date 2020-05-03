@@ -18,4 +18,10 @@ public class Character_Controller : MonoBehaviour
     {
         
     }
+
+    public void ChangeCharacter(string name, Elements element)
+    {
+        this.character.setElement(element);
+        this.character.setName(name);
+    }
 }

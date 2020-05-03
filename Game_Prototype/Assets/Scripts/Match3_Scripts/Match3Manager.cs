@@ -10,11 +10,11 @@ public class Match3Manager : MonoBehaviour
     //A cellákban helyezkednek el a Piece elemek
     GridCell[,] gameGrid;
 
-    int width = 7;
-    int height = 10;
+    int width = 5;
+    int height = 8;
 
     //NxN méretű képek esetén
-    public static int imageSize = 100;
+    public static int imageSize = 125;
 
     [Header("UI Elements")]
     public RectTransform gameBoard;
@@ -22,7 +22,7 @@ public class Match3Manager : MonoBehaviour
 	[Header("Prefabs")]
     public GameObject piecePrefab;
 
-    public List<Elements> elements = new List<Elements>();
+    Data_Controller dataController;
 
     //Listák a különböző elemek nyilvántartására
     List<Piece> updatePieceList;
@@ -43,6 +43,7 @@ public class Match3Manager : MonoBehaviour
     //A játék előkészítése
     void PrepareGame()
     {
+        dataController = GameObject.Find("Data").GetComponent<Data_Controller>();
     	//Listák és változók inicializálása
         fills = new int[width];
         updatePieceList = new List<Piece>();
@@ -78,8 +79,8 @@ public class Match3Manager : MonoBehaviour
         val = val % typeSprites.Length;
         return val+1;
         */
-        if(elements.Count > 0)
-        	return (UnityEngine.Random.Range(1,500) % elements.Count)+1;
+        if(dataController.elements.Count > 0)
+        	return (UnityEngine.Random.Range(1,500) % dataController.elements.Count)+1;
     	else
     		return 0;
     }
@@ -163,7 +164,7 @@ public class Match3Manager : MonoBehaviour
                 Piece piece = point.GetComponent<Piece>();
                 RectTransform basePosition = point.GetComponent<RectTransform>();
                 basePosition.anchoredPosition = new Vector2(imageSize/2 + (imageSize*x), -imageSize/2 - (imageSize*y));
-                piece.Initialize(currentCell.valueOfCell, new Point(x,y), elements[currentCell.valueOfCell - 1].returnSprite());
+                piece.Initialize(currentCell.valueOfCell, new Point(x,y), dataController.elements[currentCell.valueOfCell - 1].returnSprite());
                 currentCell.AddPieceToCell(piece);
 
             }
@@ -174,7 +175,7 @@ public class Match3Manager : MonoBehaviour
     int GiveBetterValue(ref List<int> valuesToRemove)
     {
         List<int> availableValues = new List<int>();
-        for(int i = 0; i < elements.Count; i++)
+        for(int i = 0; i < dataController.elements.Count; i++)
         {
             availableValues.Add(i+1);
         }
@@ -493,7 +494,7 @@ public class Match3Manager : MonoBehaviour
                             newPiece = createdPiece;
                         }
                         //Létrehozzuk a zuhanási pontra az új elemünket
-                        newPiece.Initialize(newPieceValue, checkedPoint, elements[newPieceValue-1].returnSprite());
+                        newPiece.Initialize(newPieceValue, checkedPoint, dataController.elements[newPieceValue-1].returnSprite());
                         newPiece.rect.anchoredPosition = GetPositionFromPoint(fallPoint);
                         
                         //Betömjük a lyukat
@@ -566,7 +567,7 @@ public class Match3Manager : MonoBehaviour
                         newPiece = createdPiece;
                     }
                     //Létrehozzuk a zuhanási pontra az új elemünket
-                    newPiece.Initialize(newPieceValue, checkedPoint, elements[newPieceValue-1].returnSprite());
+                    newPiece.Initialize(newPieceValue, checkedPoint, dataController.elements[newPieceValue-1].returnSprite());
                     newPiece.rect.anchoredPosition = GetPositionFromPoint(fallPoint);
                     
                     //Betömjük a lyukat

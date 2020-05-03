@@ -4,10 +4,12 @@ ScriptsOnlyBuild:
     - BattleManager
     - Character
     - Character_Controller
+    - Character_Creation
     - Data_Controller
     - Elements
     - FixedJoystick
     - Game_Controller
+    - IngameMenu_Controller
     - MainMenu_Controller
     - Match3Manager
     - MoveManager
@@ -44,6 +46,8 @@ ScriptsOnlyBuild:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     - UnityEditor.TestTools.TestRunner.TestListCacheData
     - UnityEditor.TestTools.TestRunner.TestRun.TestJobDataHolder
+    UnityEditor.UI.dll:
+    - UnityEditor.UI.CanvasScalerEditor
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.StandaloneInputModule
@@ -51,6 +55,8 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.CanvasScaler
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
+    - UnityEngine.UI.InputField
+    - UnityEngine.UI.Text
   sceneClasses:
     Assets/Scenes/Prototype_Scene.unity:
     - Class: 1
@@ -90,6 +96,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11194}
     - Class: 114
+      Script: {instanceID: 11484}
+    - Class: 114
       Script: {instanceID: 11538}
     - Class: 114
       Script: {instanceID: 11820}
@@ -104,35 +112,41 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12266}
     - Class: 114
-      Script: {instanceID: 12838}
+      Script: {instanceID: 12280}
     - Class: 114
-      Script: {instanceID: 12918}
+      Script: {instanceID: 12840}
     - Class: 114
-      Script: {instanceID: 13196}
+      Script: {instanceID: 12920}
     - Class: 114
-      Script: {instanceID: 13266}
+      Script: {instanceID: 13198}
     - Class: 114
-      Script: {instanceID: 13284}
+      Script: {instanceID: 13212}
     - Class: 114
-      Script: {instanceID: 13360}
+      Script: {instanceID: 13268}
     - Class: 114
-      Script: {instanceID: 13458}
+      Script: {instanceID: 13286}
     - Class: 114
-      Script: {instanceID: 13586}
+      Script: {instanceID: 13362}
     - Class: 114
-      Script: {instanceID: 13646}
+      Script: {instanceID: 13460}
     - Class: 114
-      Script: {instanceID: 13688}
+      Script: {instanceID: 13588}
     - Class: 114
-      Script: {instanceID: 13752}
+      Script: {instanceID: 13648}
     - Class: 114
-      Script: {instanceID: 13854}
+      Script: {instanceID: 13690}
     - Class: 114
-      Script: {instanceID: 13968}
+      Script: {instanceID: 13754}
     - Class: 114
-      Script: {instanceID: 14308}
+      Script: {instanceID: 13856}
+    - Class: 114
+      Script: {instanceID: 13898}
+    - Class: 114
+      Script: {instanceID: 13972}
     - Class: 114
       Script: {instanceID: 14312}
+    - Class: 114
+      Script: {instanceID: 14316}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -426,6 +440,12 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAsset
   - hash:
       serializedVersion: 2
+      Hash: 40985a03b53facc26855c71c344c850b
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: IngameMenu_Controller
+  - hash:
+      serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -588,7 +608,7 @@ ScriptsOnlyBuild:
     className: TimelineAsset
   - hash:
       serializedVersion: 2
-      Hash: 32988f4ab6ab2956e2dfcb701fb3dd3b
+      Hash: 0b04d4d3fbdb75aa923350b96b3ccc9f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Match3Manager
@@ -600,7 +620,7 @@ ScriptsOnlyBuild:
     className: TextMeshProUGUI
   - hash:
       serializedVersion: 2
-      Hash: 5d2d50bff95c89c5b4f555c238fe302c
+      Hash: 58c2bea299ec54e48ff49fd82286b373
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Game_Controller
@@ -630,7 +650,7 @@ ScriptsOnlyBuild:
     className: BeforeAfterTestCommandState
   - hash:
       serializedVersion: 2
-      Hash: a3ae29b6d982f918fc31a6ea0f1c23d7
+      Hash: cc14160d4098247bc6999dc515057ba3
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Data_Controller
@@ -640,6 +660,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MoveManager
+  - hash:
+      serializedVersion: 2
+      Hash: 4649e501fd22c28c055da1ad2fdc18e7
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Character_Creation
   - hash:
       serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb

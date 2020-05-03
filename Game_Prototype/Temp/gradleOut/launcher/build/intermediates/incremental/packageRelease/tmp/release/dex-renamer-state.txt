@@ -1,4 +1,0 @@
-#Thu Apr 30 18:42:10 CEST 2020
-base.0=D\:\\Programing\\Unity\\Projects\\Witch_Guild\\Android_Beadando\\Game_Prototype\\Temp\\gradleOut\\launcher\\build\\intermediates\\transforms\\dexMerger\\release\\0
-path.0=classes.dex
-renamed.0=classes.dex

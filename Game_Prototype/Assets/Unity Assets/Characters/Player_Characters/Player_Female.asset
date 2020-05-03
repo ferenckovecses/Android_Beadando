@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e31a9486c1583e429064db295a180e5, type: 3}
   m_Name: Player_Female
   m_EditorClassIdentifier: 
-  characterName: Janet
+  characterName: Jessica
   battleSprite: {fileID: 21300000, guid: 28fb17caf6152fd4ebaee1ba4a7c3bd3, type: 3}
   baseHP: 20
   baseAttack: 55
   baseDefense: 55
   level: 1
   currentXP: 0
-  element: {fileID: 11400000, guid: f3b45d774bd985047a710ae9fa589f05, type: 2}
+  element: {fileID: 11400000, guid: 5e72872291731224bb44645d1ebdc2dc, type: 2}

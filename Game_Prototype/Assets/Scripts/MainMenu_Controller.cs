@@ -41,7 +41,7 @@ public class MainMenu_Controller : MonoBehaviour
 
     public void StartGame()
     {
-    	gameController.currentState = GameState.Creation;
+    	gameController.currentState = GameState.Character_Creation;
     }
 
     public void ExitGame()

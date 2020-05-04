@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState {MainMenu, Character_Creation, World_Creation, Outworld, IngameMenu, BattleSetup, Battle, Win, Lose};
+public enum GameState {MainMenu, Character_Creation, World_Creation, Outworld, IngameMenu, BattleSetup, Battle, SpellBook, Win, Lose};
 
 public class Game_Controller : MonoBehaviour
 {
@@ -97,9 +97,12 @@ public class Game_Controller : MonoBehaviour
             Destroy(battleController);
         }
         //Ha vesztettünk
-        else if(currentState == GameState.Win)
+        else if(currentState == GameState.Lose)
         {
-            
+            Destroy(battleController);
+            Debug.Log("Game Over");
+            needCleanup = true;
+            currentState = GameState.MainMenu;
         }
 
 
@@ -135,6 +138,7 @@ public class Game_Controller : MonoBehaviour
         player = Instantiate(dataController.player[dataController.getPlayerID()]) as Character_Controller;
         player.transform.position = level.transform.Find("SpawnPoint").transform.position;
         player.transform.parent = level.transform;
+        player.name = "Player";
     }
 
     void CreateMoveControl()
@@ -146,7 +150,9 @@ public class Game_Controller : MonoBehaviour
 
     Character CreateEnemy()
     {
-        return enemy = Instantiate(dataController.enemyList[0]) as Character;
+        enemy = Instantiate(dataController.enemyList[0]) as Character;
+        enemy.Init();
+        return enemy;
     }
 
     void StartBattle()

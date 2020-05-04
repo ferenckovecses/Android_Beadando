@@ -17,6 +17,8 @@ MonoBehaviour:
   baseHP: 20
   baseAttack: 55
   baseDefense: 55
-  level: 1
+  level: 5
   currentXP: 0
   element: {fileID: 11400000, guid: 5e72872291731224bb44645d1ebdc2dc, type: 2}
+  baseMovePower: 7
+  baseXP: 64

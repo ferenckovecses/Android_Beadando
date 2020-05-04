@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementName: Dark
   sprite: {fileID: 5528609633622603068, guid: 2c97df9695607b04c92ec362851a0890, type: 3}
-  value: 4
+  elementValue: 4
+  weakTo:
+  - {fileID: 11400000, guid: f4109ebd299485e4caa64fa14a05035d, type: 2}

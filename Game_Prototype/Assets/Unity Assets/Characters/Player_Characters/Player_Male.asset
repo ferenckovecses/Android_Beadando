@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e31a9486c1583e429064db295a180e5, type: 3}
   m_Name: Player_Male
   m_EditorClassIdentifier: 
-  characterName: Jimmy
+  characterName: James
   battleSprite: {fileID: 21300000, guid: e1e09dc89e70bb345b0dd7b2500c7a8a, type: 3}
   baseHP: 20
   baseAttack: 55
   baseDefense: 55
-  level: 1
-  currentXP: 0
+  level: 7
+  currentXP: 4
   element: {fileID: 11400000, guid: f3b45d774bd985047a710ae9fa589f05, type: 2}
+  baseMovePower: 7
+  baseXP: 64

@@ -23,6 +23,7 @@ public class Match3Manager : MonoBehaviour
     public GameObject piecePrefab;
 
     Data_Controller dataController;
+    BattleManager battleManager;
 
     //Listák a különböző elemek nyilvántartására
     List<Piece> updatePieceList;
@@ -44,6 +45,7 @@ public class Match3Manager : MonoBehaviour
     void PrepareGame()
     {
         dataController = GameObject.Find("Data").GetComponent<Data_Controller>();
+        battleManager = GameObject.Find("Battle_Controller(Clone)").GetComponent<BattleManager>();
     	//Listák és változók inicializálása
         fills = new int[width];
         updatePieceList = new List<Piece>();
@@ -306,71 +308,86 @@ public class Match3Manager : MonoBehaviour
     //Változások kezelése
     void Update()
     {
-
-        //Mozgások szerint a pozíciók frissítése
-        List<Piece> finishedUpdatingList = new List<Piece>();
-        for (int i = 0; i < updatePieceList.Count; i++)
+        if(battleManager.currentBattleState == BattleState.PlayerTurn)
         {
-            Piece piece = updatePieceList[i];
-            if (!piece.UpdatePiece()) finishedUpdatingList.Add(piece);
-        }
-        for (int i = 0; i < finishedUpdatingList.Count; i++)
-        {
-            Piece piece = finishedUpdatingList[i];
-            FlippedPieces flip = GetFlipped(piece);
-            Piece flippedPiece = null;
-
-            //Simább piece esés
-            int x = (int)piece.positionInGrid.x;
-            fills[x] = Mathf.Clamp(fills[x] - 1, 0, width);
-
-            List<Point> listOfConnectedPoints = IsConnected(piece.positionInGrid, true);
-            bool wasFlipped = (flip != null);
-
-            //Ha volt flip az update előtt megnézzük, hogy lett-e match
-            if (wasFlipped)
+            //Mozgások szerint a pozíciók frissítése
+            List<Piece> finishedUpdatingList = new List<Piece>();
+            for (int i = 0; i < updatePieceList.Count; i++)
             {
-                flippedPiece = flip.GetOtherPiece(piece);
-                IncludePoints(ref listOfConnectedPoints, IsConnected(flippedPiece.positionInGrid, true));
+                Piece piece = updatePieceList[i];
+                if (!piece.UpdatePiece()) finishedUpdatingList.Add(piece);
             }
-            //Ha nem lett match
-            if (listOfConnectedPoints.Count == 0)
+            for (int i = 0; i < finishedUpdatingList.Count; i++)
             {
-                if (wasFlipped) //Visszacsinaljuk a flippet
+                Piece piece = finishedUpdatingList[i];
+                FlippedPieces flip = GetFlipped(piece);
+                Piece flippedPiece = null;
+
+                //Simább piece esés
+                int x = (int)piece.positionInGrid.x;
+                fills[x] = Mathf.Clamp(fills[x] - 1, 0, width);
+
+                List<Point> listOfConnectedPoints = IsConnected(piece.positionInGrid, true);
+                bool wasFlipped = (flip != null);
+
+                //Ha volt flip az update előtt megnézzük, hogy lett-e match
+                if (wasFlipped)
                 {
-                    FlipPieces(piece.positionInGrid, flippedPiece.positionInGrid, false);
+                    flippedPiece = flip.GetOtherPiece(piece);
+                    IncludePoints(ref listOfConnectedPoints, IsConnected(flippedPiece.positionInGrid, true));
                 }
-            }
-            //Ha match lett
-            else
-            {
-                //Eltávolítja a listában szereplő pontokat
-                foreach (Point pointInConnection in listOfConnectedPoints)
+                //Ha nem lett match
+                if (listOfConnectedPoints.Count == 0)
                 {
-                    GridCell cell = GetCellAtPoint(pointInConnection);
-                    Piece tempPiece = cell.GetPieceFromCell();
-
-                    if (tempPiece != null)
+                    if (wasFlipped) //Visszacsinaljuk a flippet
                     {
-                        tempPiece.gameObject.SetActive(false);
-                        usedPieceList.Add(tempPiece);
-
-                        //Növeljük az adott típus counterét
-                        ScoreController.IncreasePoints(tempPiece.typeValue);
+                        FlipPieces(piece.positionInGrid, flippedPiece.positionInGrid, false);
                     }
-                    //Kinullázzuk az adott cellához tartozó piece-t
-                    cell.AddPieceToCell(null);
-                    //Lyuk keletkezett, szóval hívjuk a gravitációt
-                    ApplyGravityToColumn(cell.positionOfCell.x);
                 }
-                //Lyuk keletkezett, szóval hívjuk a gravitációt
-                //ApplyGravity();
+                //Ha match lett
+                else
+                {   
+                    //Eltávolítja a listában szereplő pontokat
+                    foreach (Point pointInConnection in listOfConnectedPoints)
+                    {
+                        GridCell cell = GetCellAtPoint(pointInConnection);
+                        Piece tempPiece = cell.GetPieceFromCell();
 
-            }
-            //Eltakarítjuk a pontokat mikor már végeztünk velük
-            flippedPieceList.Remove(flip);
-            updatePieceList.Remove(piece);
+                        if (tempPiece != null)
+                        {
+                            tempPiece.gameObject.SetActive(false);
+                            usedPieceList.Add(tempPiece);
+
+                            //Növeljük az adott típus counterét
+                            ScoreController.IncreasePoints(tempPiece.typeValue-1);
+                            battleManager.Attack(tempPiece.typeValue-1);
+                        }
+
+                        
+                        //Kinullázzuk az adott cellához tartozó piece-t
+                        cell.AddPieceToCell(null);
+                        //Lyuk keletkezett, szóval hívjuk a gravitációt
+                        ApplyGravityToColumn(cell.positionOfCell.x);
+                    }
+                    battleManager.ChangeTurn();
+
+                }
+                //Eltakarítjuk a pontokat mikor már végeztünk velük
+                flippedPieceList.Remove(flip);
+                updatePieceList.Remove(piece);
+            } 
         }
+
+        else if(battleManager.currentBattleState == BattleState.EnemyTurn)
+        {
+            int random = UnityEngine.Random.Range(1,3);
+            for(int i = 0; i < random; i++)
+            {
+                battleManager.Attack();
+            }
+            battleManager.ChangeTurn();
+        }
+
     }
 
     //Visszaadja a hekyzetét adott pontnak.

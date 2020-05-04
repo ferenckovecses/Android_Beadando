@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementName: Fire
   sprite: {fileID: -8166966530815011495, guid: 34f6321b206afab459fb7c8d37989456, type: 3}
-  value: 0
+  elementValue: 0
+  weakTo:
+  - {fileID: 11400000, guid: 7df5ce90db3354047bc32149097bbeda, type: 2}

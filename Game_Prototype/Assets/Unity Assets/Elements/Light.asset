@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementName: Light
   sprite: {fileID: -488248382649040768, guid: 34f6321b206afab459fb7c8d37989456, type: 3}
-  value: 5
+  elementValue: 5
+  weakTo:
+  - {fileID: 11400000, guid: 5e72872291731224bb44645d1ebdc2dc, type: 2}

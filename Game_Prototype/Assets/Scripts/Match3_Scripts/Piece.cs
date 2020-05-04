@@ -6,8 +6,8 @@ using UnityEngine.EventSystems;
 
 public class Piece : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-	[HideInInspector]
 	public int typeValue;
+    [HideInInspector]
     public Point positionInGrid;
 
     Image spriteImage;

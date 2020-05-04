@@ -4,13 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public enum BattleState {PlayerTurn, EnemyTurn, Endgame};
+
 public class BattleManager : MonoBehaviour
 {
+
+    public BattleState currentBattleState;
     Character enemy;
     Character player;
     public GameObject scene;
     GameObject activeScene;
     Game_Controller gameController;
+    Data_Controller dataController;
     Image playerSprite;
 
     // Start is called before the first frame update
@@ -18,6 +23,8 @@ public class BattleManager : MonoBehaviour
     {
         ScoreController.ResetScore();
         gameController = GameObject.Find("Game").GetComponent<Game_Controller>();
+        dataController = GameObject.Find("Data").GetComponent<Data_Controller>();
+        currentBattleState = BattleState.PlayerTurn;
     }
 
     // Update is called once per frame
@@ -43,7 +50,10 @@ public class BattleManager : MonoBehaviour
         GameObject.Find("Enemy_Name").GetComponent<TMP_Text>().text = enemy.characterName;
         GameObject.Find("Player_Type_Image").GetComponent<Image>().sprite = player.element.returnSprite();
         GameObject.Find("Enemy_Type_Image").GetComponent<Image>().sprite = enemy.element.returnSprite();
-
+        GameObject.Find("Player_HP").GetComponent<TMP_Text>().text = player.GetHPStatus();
+        GameObject.Find("Enemy_HP").GetComponent<TMP_Text>().text = enemy.GetHPStatus();
+        GameObject.Find("Player_Lvl").GetComponent<TMP_Text>().text = player.GetLevelText();
+        GameObject.Find("Enemy_Lvl").GetComponent<TMP_Text>().text = enemy.GetLevelText();
 
         var escapeButton = GameObject.Find("Escape_Button").GetComponent<Button>();
         escapeButton.onClick.AddListener(delegate{EscapeBattle();});
@@ -52,6 +62,84 @@ public class BattleManager : MonoBehaviour
     public void EscapeBattle()
     {
         gameController.currentState = GameState.Win;
+    }
+
+    public int CalculateDamage(int typeID)
+    {
+        int damage;
+        if(currentBattleState == BattleState.PlayerTurn)
+        {
+            float baseDamage = (((((2 * player.GetLevel()) / 5) + 2) * player.baseMovePower * (player.GetAttack() / enemy.GetDefense())) / 50 ) + 2;
+            float sameTypeBonus = (player.GetElement().elementValue == typeID) ? 1.5f : 1;
+            float effectivity = enemy.GetElement().isSuperEffective(typeID);
+            float randomRoll = UnityEngine.Random.Range(0.85f, 1f);
+            damage = (int)(baseDamage * randomRoll * sameTypeBonus * effectivity);
+        }
+
+        else
+        {
+            float baseDamage = (((((2 * enemy.GetLevel()) / 5) + 2) * enemy.baseMovePower * (enemy.GetAttack() / player.GetDefense())) / 50 ) + 2;
+            float sameTypeBonus = (typeID == -1) ? 1.5f : 1;
+            float effectivity = player.GetElement().isSuperEffective(typeID);
+            float randomRoll = UnityEngine.Random.Range(0.85f, 1f);
+            damage = (int)(baseDamage * randomRoll * sameTypeBonus * effectivity);
+        }
+        return damage;
+    }
+
+    public void Attack(int typeID = -1)
+    {
+        bool result;
+        //Ha a mi körünk van
+        if(currentBattleState == BattleState.PlayerTurn)
+        {
+            result = player.Attack(enemy, CalculateDamage(typeID));
+            if(result)
+            {
+                currentBattleState = BattleState.Endgame;
+            }
+
+        }
+        //Ha az ellenség köre van
+        else if(currentBattleState == BattleState.EnemyTurn)
+        {
+            result = enemy.Attack(player, CalculateDamage(typeID));
+            if(result)
+            {
+                currentBattleState = BattleState.Endgame;
+            }
+        }
+        ResetHP();
+    }
+
+    void ResetHP()
+    {
+        GameObject.Find("Player_HP").GetComponent<TMP_Text>().text = player.GetHPStatus();
+        GameObject.Find("Enemy_HP").GetComponent<TMP_Text>().text = enemy.GetHPStatus();
+    }
+
+    public void ChangeTurn()
+    {
+        if(currentBattleState == BattleState.PlayerTurn)
+        {
+            currentBattleState = BattleState.EnemyTurn;
+        }
+        else if(currentBattleState == BattleState.EnemyTurn)
+        {
+            currentBattleState = BattleState.PlayerTurn;
+        }
+
+        else
+        {
+            if(player.NotDead())
+            {
+                player.GetXP(enemy.GiveXP());
+                gameController.currentState = GameState.Win;
+            }
+
+            else
+                gameController.currentState = GameState.Lose;
+        }
     }
 
 }
@@ -75,9 +163,9 @@ public static class ScoreController
         switch(type)
         {
         case 1: fire++; break;
-        case 2: water++; break;
-        case 3: earth++; break;
-        case 4: air++; break;
+        case 2: air++; break;
+        case 3: water++; break;
+        case 4: earth++; break;
         case 5: dark++; break;
         case 6: ligth++; break;
         default: break;
@@ -89,9 +177,9 @@ public static class ScoreController
         switch(type)
         {
         case 1: fire-=amount; break;
-        case 2: water-=amount; break;
-        case 3: earth-=amount; break;
-        case 4: air-=amount; break;
+        case 2: air-=amount; break;
+        case 3: water-=amount; break;
+        case 4: earth-=amount; break;
         case 5: dark-=amount; break;
         case 6: ligth-=amount; break;
         default: break;

@@ -13,6 +13,7 @@ ScriptsOnlyBuild:
     - MainMenu_Controller
     - Match3Manager
     - MoveManager
+    - NPC_Controller
     - Piece
     - Player_Movement_Controller
     Unity.2D.Animation.Editor.dll:
@@ -46,8 +47,6 @@ ScriptsOnlyBuild:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     - UnityEditor.TestTools.TestRunner.TestListCacheData
     - UnityEditor.TestTools.TestRunner.TestRun.TestJobDataHolder
-    UnityEditor.UI.dll:
-    - UnityEditor.UI.CanvasScalerEditor
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.StandaloneInputModule
@@ -147,6 +146,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 14312}
     - Class: 114
       Script: {instanceID: 14316}
+    - Class: 114
+      Script: {instanceID: 30242}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -326,7 +327,7 @@ ScriptsOnlyBuild:
     className: AnimationTrack
   - hash:
       serializedVersion: 2
-      Hash: 24261e73f4b4e6e9157e609479039e51
+      Hash: 181922bc90858d8061168bc3602684eb
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BattleManager
@@ -386,7 +387,7 @@ ScriptsOnlyBuild:
     className: Element_Controller
   - hash:
       serializedVersion: 2
-      Hash: dff75c5f560101424a7b094527fee286
+      Hash: 2791f3d79f6d3d229b3380b6e22704bf
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Elements
@@ -500,7 +501,7 @@ ScriptsOnlyBuild:
     className: RemoteTestResultSender
   - hash:
       serializedVersion: 2
-      Hash: 3e52168e4d7eadde3ab1783e96dcd081
+      Hash: d308bf66b977920820b71062f8348486
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Character
@@ -786,6 +787,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: NPC_Controller
   platform: 13
   scenePathNames:
   - Assets/Scenes/Prototype_Scene.unity

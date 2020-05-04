@@ -23,5 +23,6 @@ public class Character_Controller : MonoBehaviour
     {
         this.character.setElement(element);
         this.character.setName(name);
+        this.character.ResetCharacter();
     }
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Dark
   m_EditorClassIdentifier: 
   elementName: Dark
-  sprite: {fileID: 5528609633622603068, guid: 2c97df9695607b04c92ec362851a0890, type: 3}
+  sprite: {fileID: 3292748833880187265, guid: 7aaf9d191b7c1d24aa3aee535f16b89a, type: 3}
   elementValue: 4
   weakTo:
   - {fileID: 11400000, guid: f4109ebd299485e4caa64fa14a05035d, type: 2}

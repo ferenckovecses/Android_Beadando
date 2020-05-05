@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fire
   m_EditorClassIdentifier: 
   elementName: Fire
-  sprite: {fileID: -8166966530815011495, guid: 34f6321b206afab459fb7c8d37989456, type: 3}
+  sprite: {fileID: 1672932990299466674, guid: 7aaf9d191b7c1d24aa3aee535f16b89a, type: 3}
   elementValue: 0
   weakTo:
   - {fileID: 11400000, guid: 7df5ce90db3354047bc32149097bbeda, type: 2}

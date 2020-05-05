@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Water
   m_EditorClassIdentifier: 
   elementName: Water
-  sprite: {fileID: -7105913188517789750, guid: 34f6321b206afab459fb7c8d37989456, type: 3}
+  sprite: {fileID: -1482943004892960625, guid: 7aaf9d191b7c1d24aa3aee535f16b89a, type: 3}
   elementValue: 2
   weakTo:
   - {fileID: 11400000, guid: f48460b0b356c2c4ebbdfc9a02c4844f, type: 2}

@@ -389,6 +389,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7df5ce90db3354047bc32149097bbeda, type: 2}
   - {fileID: 11400000, guid: f48460b0b356c2c4ebbdfc9a02c4844f, type: 2}
   - {fileID: 11400000, guid: 5e72872291731224bb44645d1ebdc2dc, type: 2}
+  - {fileID: 11400000, guid: f4109ebd299485e4caa64fa14a05035d, type: 2}
   interactableCharacter: {fileID: 0}
 --- !u!1 &456089510
 GameObject:
@@ -444,6 +445,7 @@ MonoBehaviour:
   ingameMenuController: {fileID: 1892678185}
   currentState: 0
   needCleanup: 0
+  battleStarted: 0
 --- !u!1 &459160765
 GameObject:
   m_ObjectHideFlags: 0

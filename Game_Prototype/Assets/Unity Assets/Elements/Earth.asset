@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Earth
   m_EditorClassIdentifier: 
   elementName: Earth
-  sprite: {fileID: 7086606104257924489, guid: 34f6321b206afab459fb7c8d37989456, type: 3}
+  sprite: {fileID: -4709180729555592315, guid: 7aaf9d191b7c1d24aa3aee535f16b89a, type: 3}
   elementValue: 3
   weakTo:
   - {fileID: 11400000, guid: 1e4c28ad925c0fc4ea5cd5d6928a52d0, type: 2}

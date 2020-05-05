@@ -18,6 +18,7 @@ public class Character : ScriptableObject
 	public Elements element;
 	public int baseMovePower = 20;
 	public int baseXP = 64;
+	public Dialogue dialogue;
 
 
 	//Calculated stats
@@ -163,6 +164,16 @@ public class Character : ScriptableObject
 		this.level = 5;
 		this.baseMovePower = 5;
 		Init();
+	}
+
+	public void TriggerDialogue()
+	{
+		FindObjectOfType<Dialogue_Controller>().StartDialogue(this);
+	}
+
+	public void ResetHP()
+	{
+		this.currentHP = this.currentMaxHP;
 	}
 
 }

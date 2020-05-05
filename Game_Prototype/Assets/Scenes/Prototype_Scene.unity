@@ -273,6 +273,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 193500242}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &193500245 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8017582988669950421, guid: 050a194e22c4a704f8b6b93b7db6954a,
+    type: 3}
+  m_PrefabInstance: {fileID: 193500242}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 193500244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7702500a3bfad6047a674daf87295f1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &243952664
 GameObject:
   m_ObjectHideFlags: 0
@@ -377,6 +389,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7df5ce90db3354047bc32149097bbeda, type: 2}
   - {fileID: 11400000, guid: f48460b0b356c2c4ebbdfc9a02c4844f, type: 2}
   - {fileID: 11400000, guid: 5e72872291731224bb44645d1ebdc2dc, type: 2}
+  interactableCharacter: {fileID: 0}
 --- !u!1 &456089510
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,6 +438,10 @@ MonoBehaviour:
   battleControllerPrefab: {fileID: 8803464077102532926, guid: ba2bd7ec0521de54bbd54aaabaed0662,
     type: 3}
   dataController: {fileID: 342115388}
+  dialogueController: {fileID: 1145844861}
+  mainMenuController: {fileID: 243952664}
+  characterCreationController: {fileID: 459160765}
+  ingameMenuController: {fileID: 1892678185}
   currentState: 0
   needCleanup: 0
 --- !u!1 &459160765
@@ -646,7 +663,7 @@ GameObject:
   - component: {fileID: 649009487}
   - component: {fileID: 649009486}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: Outworld_Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -805,6 +822,7 @@ Transform:
   - {fileID: 243952665}
   - {fileID: 1892678186}
   - {fileID: 459160766}
+  - {fileID: 1145844862}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -886,6 +904,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1091709076}
   m_CullTransparentMesh: 0
+--- !u!1 &1145844861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1145844862}
+  - component: {fileID: 1145844863}
+  m_Layer: 0
+  m_Name: Dialogue
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1145844862
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145844861}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 937337689}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1145844863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145844861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 164b6a03847504f40aff192ddc3f8d46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueUI: {fileID: 6409298612731811954, guid: 7667121f5e5f83a41873cffdaa5343c0,
+    type: 3}
+  commands:
+  - HealPlayer()
+  - StartBattle()
 --- !u!1 &1178162490
 GameObject:
   m_ObjectHideFlags: 0
@@ -1169,8 +1235,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 456089512}
-        m_MethodName: TriggerBattle
+      - m_Target: {fileID: 193500245}
+        m_MethodName: ActionButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1224,6 +1290,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 937337689}
     m_Modifications:
+    - target: {fileID: 8883941346340216370, guid: 5e16b577925856549a4c6558b35b6ffd,
+        type: 3}
+      propertyPath: m_Name
+      value: Outworld_Canvas
+      objectReference: {fileID: 0}
     - target: {fileID: 8883941346532322417, guid: 5e16b577925856549a4c6558b35b6ffd,
         type: 3}
       propertyPath: m_LocalPosition.x

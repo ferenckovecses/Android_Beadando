@@ -61,7 +61,10 @@ public class BattleManager : MonoBehaviour
 
     public void EscapeBattle()
     {
-        gameController.currentState = GameState.Win;
+        if(gameController.currentState == GameState.NPCbattle)
+            Debug.Log("There's no escape option in NPC Battles!");
+        else
+            gameController.currentState = GameState.Win;
     }
 
     public int CalculateDamage(int typeID)

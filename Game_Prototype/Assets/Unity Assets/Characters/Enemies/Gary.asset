@@ -22,3 +22,10 @@ MonoBehaviour:
   element: {fileID: 11400000, guid: 1e4c28ad925c0fc4ea5cd5d6928a52d0, type: 2}
   baseMovePower: 10
   baseXP: 64
+  dialogue:
+    sentences:
+    - You need some training. Let's battle!
+    - Battle()
+    - That was a great fight! Heal yourself and come back to train!
+  WinText: 
+  LoseText: 

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState {MainMenu, Character_Creation, World_Creation, Outworld, Dialogue, IngameMenu, NPCbattle, RandomEncounter, BattleSetup, Battle, SpellBook, Win, Lose};
+public enum GameState {MainMenu, LoadGame, SaveGame, Character_Creation, World_Creation, Outworld, Dialogue,
+ IngameMenu, NPCbattle, RandomEncounter, BattleSetup, Battle, SpellBook, Win, Lose};
 
 public class Game_Controller : MonoBehaviour
 {
@@ -79,7 +80,7 @@ public class Game_Controller : MonoBehaviour
             }
 
             //Létrehozza a játékhoz szükséges dolgokat
-            Init();
+            Init(true);
 
             //Átváltunk a játék fázisba
             currentState = GameState.Outworld;
@@ -135,27 +136,30 @@ public class Game_Controller : MonoBehaviour
         }
     }
 
-    void Init()
+    void Init(bool firstTime = false)
     {
         enemy = null;
         Outworld.SetActive(true);
         LoadLevel();
-        InstantiateCharacter();
+        InstantiateCharacter(firstTime);
         CreateMoveControl();
     }
 
-    void LoadLevel()
+    void LoadLevel(int id = 0)
     {
         //Level létrehozás
-        level = Instantiate(dataController.levels[0]) as GameObject;
+        level = Instantiate(dataController.levels[id]) as GameObject;
         level.transform.parent = Outworld.transform;
     }
 
-    void InstantiateCharacter()
+    void InstantiateCharacter(bool firstTime)
     {
         //Karakter elhelyezés
         player = Instantiate(dataController.player[dataController.getPlayerID()]) as Character_Controller;
-        player.transform.position = level.transform.Find("SpawnPoint").transform.position;
+        if(firstTime)
+            player.transform.position = level.transform.Find("SpawnPoint").transform.position;
+        else
+            PositionCharacter(player);
         player.transform.parent = level.transform;
         player.name = "Player";
     }
@@ -186,10 +190,11 @@ public class Game_Controller : MonoBehaviour
         battleController = Instantiate(battleControllerPrefab, Vector3.zero, Quaternion.identity);
     }
 
-    void CleanUp()
+    public void CleanUp()
     {
+        dialogueController.GetComponent<Dialogue_Controller>().EndDialogue();
         Destroy(player);
-        Destroy(enemy);
+        enemy = null;
         Destroy(level);
         needCleanup = false;
     }
@@ -197,7 +202,7 @@ public class Game_Controller : MonoBehaviour
     //Menu gomb függvénye
     public void IngameMenu()
     {
-        if(currentState != GameState.Dialogue)
+        if(currentState == GameState.Outworld)
             currentState = GameState.IngameMenu;
     }
 
@@ -214,6 +219,47 @@ public class Game_Controller : MonoBehaviour
         enemy.Init();
         currentState = GameState.NPCbattle;
 
+    }
+
+    public void SaveGame()
+    {
+        var oldState = currentState;
+        currentState = GameState.SaveGame;
+        Save_Controller.SaveGame(player,dataController.GetComponent<Data_Controller>().getPlayerID());
+        currentState = oldState;
+    }
+
+    public void LoadGame()
+    {
+        var oldState = currentState;
+        currentState = GameState.SaveGame;
+        Player_Data data = Save_Controller.LoadGame();
+        if(data != null)
+        {
+            dataController.GetComponent<Data_Controller>().ChangePosition(data.position);
+            dataController.GetComponent<Data_Controller>().ChangePlayerId(data.playerId);
+            CleanUp();
+            Init(false);
+            currentState = GameState.Outworld;
+        }
+
+        else
+        {
+            Debug.Log("Betöltés Sikertelen!");
+            currentState = oldState;
+        }
+
+
+    }
+
+    void PositionCharacter(Character_Controller player)
+    {
+        var positions = dataController.GetComponent<Data_Controller>().getPositions();
+        Vector3 newPosition;
+        newPosition.x = positions[0];
+        newPosition.y = positions[1];
+        newPosition.z = positions[2];
+        player.transform.position = newPosition;
     }
 
 

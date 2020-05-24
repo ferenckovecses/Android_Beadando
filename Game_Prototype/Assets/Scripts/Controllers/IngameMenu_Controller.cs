@@ -50,7 +50,7 @@ public class IngameMenu_Controller : MonoBehaviour
 
     public void SaveGame()
     {
-    	Debug.Log("Save feature coming soon, just like your mother!");
+    	gameController.SaveGame();
     }
 
     public void MainMenu()
@@ -58,7 +58,7 @@ public class IngameMenu_Controller : MonoBehaviour
     	SaveGame();
     	dispalyed = false;
     	Destroy(menuUI);
-    	gameController.needCleanup = true;
+    	gameController.CleanUp();
     	gameController.currentState = GameState.MainMenu;
     }
 }

@@ -13,7 +13,7 @@ public class Character : ScriptableObject
 	public int baseHP=20;
 	public int baseAttack=55;
 	public int baseDefense=55;
-	public int level = 1;
+	public int baseLevel = 5;
 	public int currentXP=0;
 	public Elements element;
 	public int baseMovePower = 20;
@@ -22,11 +22,13 @@ public class Character : ScriptableObject
 
 
 	//Calculated stats
+	int level = 1;
 	int experienceCap = 0;
 	int currentHP = 0;
 	int currentAttack = 0;
 	int currentDefense = 0;
 	int currentMaxHP = 0;
+	int currentMovepower = 0;
 
 	public void setLevel(int newLevel)
 	{
@@ -45,14 +47,17 @@ public class Character : ScriptableObject
 		this.characterName = newName;
 	}
 
+	//Beállítja a karakter harci statjait
 	public void Init()
 	{
+		this.level = this.baseLevel;
 		this.experienceCap = (int)Mathf.Pow(this.level, 2f);
 		this.currentHP = ((2 * this.baseHP) * this.level) / 100 + this.level + 10;
 		this.currentAttack = ((2 * this.baseAttack) * this.level) / 100 + 5;
 		this.currentDefense = ((2 * this.baseDefense) * this.level) / 100 + 5;
 		this.currentXP = 0;
-		currentMaxHP = currentHP;
+		this.currentMaxHP = this.currentHP;
+		this.currentMovepower = this.baseMovePower;
 	}
 
 	public static Character CreateInstance()
@@ -99,7 +104,7 @@ public class Character : ScriptableObject
 
 	public int GetMovePower()
 	{
-		return this.baseMovePower;
+		return this.currentMovepower;
 	}
 
 	public Elements GetElement()
@@ -148,7 +153,7 @@ public class Character : ScriptableObject
 		var healthDiff = this.currentHP - this.currentMaxHP;
 		this.level += 1;
 		Debug.Log("Level Up! New level: " + this.level);
-		this.baseMovePower += 1;
+		this.currentMovepower += 1;
 		this.Init();
 		this.currentHP = this.currentMaxHP + healthDiff;
 		GetXP(overflowXP);
@@ -161,8 +166,6 @@ public class Character : ScriptableObject
 
 	public void ResetCharacter()
 	{
-		this.level = 5;
-		this.baseMovePower = 5;
 		Init();
 	}
 

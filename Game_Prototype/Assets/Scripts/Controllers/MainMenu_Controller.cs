@@ -51,7 +51,8 @@ public class MainMenu_Controller : MonoBehaviour
 
     public void LoadGame()
     {
-    	Debug.Log("Load Game feature coming soon with a very expensive DLC");
+    	//Debug.Log("Load Game feature coming soon with a very expensive DLC");
+        gameController.LoadGame();
     }
 
     void SetupUI()

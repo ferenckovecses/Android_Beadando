@@ -72,7 +72,7 @@ public class BattleManager : MonoBehaviour
         int damage;
         if(currentBattleState == BattleState.PlayerTurn)
         {
-            float baseDamage = (((((2 * player.GetLevel()) / 5) + 2) * player.baseMovePower * (player.GetAttack() / enemy.GetDefense())) / 50 ) + 2;
+            float baseDamage = (((((2 * player.GetLevel()) / 5) + 2) * player.GetMovePower() * (player.GetAttack() / enemy.GetDefense())) / 50 ) + 2;
             float sameTypeBonus = (player.GetElement().elementValue == typeID) ? 1.5f : 1;
             float effectivity = enemy.GetElement().isSuperEffective(typeID);
             float randomRoll = UnityEngine.Random.Range(0.85f, 1f);
@@ -81,7 +81,7 @@ public class BattleManager : MonoBehaviour
 
         else
         {
-            float baseDamage = (((((2 * enemy.GetLevel()) / 5) + 2) * enemy.baseMovePower * (enemy.GetAttack() / player.GetDefense())) / 50 ) + 2;
+            float baseDamage = (((((2 * enemy.GetLevel()) / 5) + 2) * enemy.GetMovePower() * (enemy.GetAttack() / player.GetDefense())) / 50 ) + 2;
             float sameTypeBonus = (typeID == -1) ? 1.5f : 1;
             float effectivity = player.GetElement().isSuperEffective(typeID);
             float randomRoll = UnityEngine.Random.Range(0.85f, 1f);

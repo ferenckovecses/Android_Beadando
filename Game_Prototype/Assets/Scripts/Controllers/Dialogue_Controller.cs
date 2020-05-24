@@ -72,7 +72,7 @@ public class Dialogue_Controller : MonoBehaviour
 
     }
 
-    void EndDialogue()
+    public void EndDialogue()
     {
         gameController.currentState = GameState.Outworld;
         dialogueBox.SetActive(false);

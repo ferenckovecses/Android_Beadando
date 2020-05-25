@@ -189,7 +189,7 @@ public class Game_Controller : MonoBehaviour
         Outworld.SetActive(false);
         battleController = Instantiate(battleControllerPrefab, Vector3.zero, Quaternion.identity);
     }
-
+    //Friss/új helyzetet teremt
     public void CleanUp()
     {
         dialogueController.GetComponent<Dialogue_Controller>().EndDialogue();

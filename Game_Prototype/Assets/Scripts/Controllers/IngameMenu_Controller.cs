@@ -9,55 +9,70 @@ public class IngameMenu_Controller : MonoBehaviour
 	Game_Controller gameController;
 	bool dispalyed = false;
 	GameObject menuUI;
-    // Start is called before the first frame update
+
+    //Kreálunk egy gameController referenciát
     void Start()
     {
         gameController = GameObject.Find("Game").GetComponent<Game_Controller>();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        //Ha Ingame menü fázisban vagyunk és még nincs megjelenítve a menü
         if(gameController.currentState == GameState.IngameMenu && dispalyed == false)
         {
         	DisplayMenu();
         }
     }
 
+    //Megjeleníti a menüt
     void DisplayMenu()
     {
         dispalyed = true;
 
         menuUI = Instantiate(menuPrefab, Vector3.zero, Quaternion.identity);
 
+        SetupButtons();
+		
+    }
+
+    //Gombok és onclick eventek beállítása
+    void SetupButtons()
+    {
         var returnButton = GameObject.Find("Return_Button").GetComponent<Button>();
-        returnButton.onClick.AddListener(delegate{HideMenu();});
+        returnButton.onClick.AddListener(delegate{BackToGame();});
 
         var exitButton = GameObject.Find("Exit_Button").GetComponent<Button>();
         exitButton.onClick.AddListener(delegate{MainMenu();});
 
         var saveButton = GameObject.Find("Save_Button").GetComponent<Button>();
         saveButton.onClick.AddListener(delegate{SaveGame();});
-		
     }
 
+    //Eltünteti a menüt
     public void HideMenu()
     {
     	Destroy(menuUI);
     	dispalyed = false;
-    	gameController.currentState = GameState.Outworld;
     }
 
+    //Visszalép a játékba
+    public void BackToGame()
+    {
+        HideMenu();
+        gameController.currentState = GameState.Outworld;
+    }
+
+    //Elmenti a játékot
     public void SaveGame()
     {
     	gameController.SaveGame();
     }
 
+    //Visszalép a főmenübe
     public void MainMenu()
     {
-    	SaveGame();
-    	dispalyed = false;
-    	Destroy(menuUI);
+        HideMenu();
     	gameController.CleanUp();
     	gameController.currentState = GameState.MainMenu;
     }

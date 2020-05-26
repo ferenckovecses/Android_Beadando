@@ -18,6 +18,7 @@ public class Character : ScriptableObject
 	public Elements element;
 	public int baseMovePower = 20;
 	public int baseXP = 64;
+	
 	public Dialogue dialogue;
 
 
@@ -30,16 +31,14 @@ public class Character : ScriptableObject
 	int currentMaxHP = 0;
 	int currentMovepower = 0;
 
-	public void setLevel(int newLevel)
-	{
-		this.level = newLevel;
-		this.currentXP = 0;
-		this.experienceCap = level ^ 3;
-	}
-
 	public void setElement(Elements element)
 	{
 		this.element = element;
+	}
+
+	public int GetElementID()
+	{
+		return this.element.elementValue;
 	}
 
 	public void setName(string newName)
@@ -50,7 +49,6 @@ public class Character : ScriptableObject
 	//Beállítja a karakter harci statjait
 	public void Init()
 	{
-		this.level = this.baseLevel;
 		this.experienceCap = (int)Mathf.Pow(this.level, 2f);
 		this.currentHP = ((2 * this.baseHP) * this.level) / 100 + this.level + 10;
 		this.currentAttack = ((2 * this.baseAttack) * this.level) / 100 + 5;
@@ -92,6 +90,12 @@ public class Character : ScriptableObject
 		return this.level;
 	}
 
+	public void SetLevel(int newLevel)
+	{
+		this.level = newLevel;
+		Init();
+	}
+
 	public int GetAttack()
 	{
 		return this.currentAttack;
@@ -110,6 +114,16 @@ public class Character : ScriptableObject
 	public Elements GetElement()
 	{
 		return this.element;
+	}
+
+	public int GetCurrentHP()
+	{
+		return this.currentHP;
+	}
+
+	public void SetCurrentHP(int newHP)
+	{
+		this.currentHP = newHP;
 	}
 
 	public string GetHPStatus()
@@ -166,6 +180,7 @@ public class Character : ScriptableObject
 
 	public void ResetCharacter()
 	{
+		this.level = this.baseLevel;
 		Init();
 	}
 

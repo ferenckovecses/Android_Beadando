@@ -1,18 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class Character_Creation : MonoBehaviour
 {
-	public GameObject UI_Prefab;
+	public GameObject prefabUI;
 	public string[] signList;
 	GameObject firstPanel;
 	GameObject secondPanel;
 	Game_Controller gameController;
 	Data_Controller dataController;
-	GameObject UI;
+	GameObject variableUI;
 	Image spriteImage;
 	bool needToCreate;
 
@@ -21,7 +19,6 @@ public class Character_Creation : MonoBehaviour
 	TMP_Text sign;
 	InputField nameField;
 
-    // Start is called before the first frame update
     void Start()
     {
     	needToCreate = true;
@@ -30,7 +27,7 @@ public class Character_Creation : MonoBehaviour
         dataController = GameObject.Find("Data").GetComponent<Data_Controller>();
     }
 
-    // Update is called once per frame
+    //Ha karakter létrehozás fázisban vagyunk és még nincs a létrehozás képernyő megjelenítve
     void Update()
     {
     	if(gameController.currentState == GameState.Character_Creation && needToCreate)
@@ -39,17 +36,17 @@ public class Character_Creation : MonoBehaviour
     		Init();
     	}
     }
-
+    //Lapozás a létrehozás képernyők között
     public void ContinueCreation()
     {
         firstPanel.SetActive(false);
         secondPanel.SetActive(true);
     }
-
+    //Karakter létrehozása a begyűjtött információk alapján
     public void CreateCharacter()
     {
     	dataController.SetCharacter(spriteID,nameField.text,GetElementId(signID));
-    	Destroy(UI);
+    	Destroy(variableUI);
     	needToCreate = true;
     	gameController.currentState = GameState.World_Creation;
     }
@@ -60,9 +57,9 @@ public class Character_Creation : MonoBehaviour
     	spriteID = 0;
 
     	//UI létrehozása prefabból
-    	UI = Instantiate(UI_Prefab, Vector3.zero, Quaternion.identity);
+    	variableUI = Instantiate(prefabUI, Vector3.zero, Quaternion.identity);
 
-    	//UI szegmensek megszerzése
+    	//UI szegmensek referálása
         firstPanel = GameObject.Find("First_Part");
         secondPanel = GameObject.Find("Second_Part");
 

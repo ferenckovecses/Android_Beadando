@@ -259,7 +259,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Movement
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8017582988669950421, guid: 050a194e22c4a704f8b6b93b7db6954a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 050a194e22c4a704f8b6b93b7db6954a, type: 3}
 --- !u!4 &193500243 stripped
 Transform:
@@ -273,18 +274,20 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 193500242}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &193500245 stripped
+--- !u!114 &193500245
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8017582988669950421, guid: 050a194e22c4a704f8b6b93b7db6954a,
-    type: 3}
-  m_PrefabInstance: {fileID: 193500242}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 193500244}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7702500a3bfad6047a674daf87295f1a, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ef0bf60cb1d0964187ddd3d2e3e59a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  joystick: {fileID: 2043634907}
 --- !u!1 &243952664
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,6 +386,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 597d0afa3352cf84585075151642ee65, type: 2}
   levels:
   - {fileID: 46665157713339070, guid: 43419a3a1deeed2499a467a16b0f56c9, type: 3}
+  - {fileID: 1275314550216548791, guid: 7acd0f9e66f27c84cb39b36af93fd86d, type: 3}
   elements:
   - {fileID: 11400000, guid: f3b45d774bd985047a710ae9fa589f05, type: 2}
   - {fileID: 11400000, guid: 1e4c28ad925c0fc4ea5cd5d6928a52d0, type: 2}
@@ -434,8 +438,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06cf861cbb2833345b3df1e154187ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Outworld: {fileID: 484807674}
-  MovementController: {fileID: 193500244}
+  worldUI: {fileID: 484807674}
+  movementController: {fileID: 193500244}
   battleControllerPrefab: {fileID: 8803464077102532926, guid: ba2bd7ec0521de54bbd54aaabaed0662,
     type: 3}
   dataController: {fileID: 342115388}
@@ -444,7 +448,6 @@ MonoBehaviour:
   characterCreationController: {fileID: 459160765}
   ingameMenuController: {fileID: 1892678185}
   currentState: 0
-  needCleanup: 0
   battleStarted: 0
 --- !u!1 &459160765
 GameObject:
@@ -489,7 +492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8033c5d0bda4d9449271258702e99a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UI_Prefab: {fileID: 2869620919698626631, guid: 1910d1e04426e5245ac57546e4a1f102,
+  prefabUI: {fileID: 2869620919698626631, guid: 1910d1e04426e5245ac57546e4a1f102,
     type: 3}
   signList:
   - Aries

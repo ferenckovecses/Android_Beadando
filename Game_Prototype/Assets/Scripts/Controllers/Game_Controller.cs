@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState {MainMenu, LoadGame, SaveGame, Character_Creation, World_Creation, Outworld, Dialogue,
+public enum GameState {MainMenu, LoadGame, SaveGame, Character_Creation, World_Creation, Outworld, Travelling, Dialogue,
  IngameMenu, NPCbattle, RandomEncounter, BattleSetup, Battle, SpellBook, Win, Lose};
 
 public class Game_Controller : MonoBehaviour
 {
-    //Level parent és outworld UI, joystick etc
-	public GameObject Outworld;
+    //World UI
+	public GameObject worldUI;
     //Input és mozgás kezelés
-    public GameObject MovementController;
+    public GameObject movementController;
     //Battle controller prefab, harc esetén felbontandó
     public GameObject battleControllerPrefab;
     //A fontos adatok eléréshez és tárolásához az adatvezérlő.
@@ -40,9 +40,6 @@ public class Game_Controller : MonoBehaviour
     //Játék aktuális státuszát tartalmazó változó
     public GameState currentState;
 
-    //Új játék esetén takarítás
-    public bool needCleanup;
-
     public bool battleStarted;
 
     void Start()
@@ -51,33 +48,28 @@ public class Game_Controller : MonoBehaviour
         Screen.SetResolution(1920,1080,true);
 
         //Alaphelyzet beállítása
-        needCleanup = false;
         battleStarted = false;
 
-        //Startnál a menüben kezdünk
+        //Játék indulásakor a menüben kezdünk
         currentState = GameState.MainMenu;
     }
 
+
     void Update()
     {
-        
+        //Főmenü fázis
         if(currentState == GameState.MainMenu)
         {
 
-            if(Outworld.activeSelf)
+            if(worldUI.activeSelf)
             {
-                Outworld.SetActive(false);
+                worldUI.SetActive(false);
             }
         }
 
-        //Amikor indul az új játék létre kell hozni a világot
+        //Világ létrehozása
         else if(currentState == GameState.World_Creation)
         {
-            //Ha voltunk már a játékban és visszalépünk, akkor feltakarítunk kreálás előtt
-            if(needCleanup)
-            {
-                CleanUp();
-            }
 
             //Létrehozza a játékhoz szükséges dolgokat
             Init(true);
@@ -86,6 +78,7 @@ public class Game_Controller : MonoBehaviour
             currentState = GameState.Outworld;
         }
 
+        //Ha random ellenféllel találkozunk
         else if(currentState == GameState.RandomEncounter)
         {
             if(!battleStarted)
@@ -98,6 +91,7 @@ public class Game_Controller : MonoBehaviour
 
         }
 
+        //Ha NPC-vel harcot kezdünk
         else if(currentState == GameState.NPCbattle)
         {
             if(!battleStarted)
@@ -108,6 +102,7 @@ public class Game_Controller : MonoBehaviour
             }
         }
 
+        //Ha dialógus játszódik épp
         else if(currentState == GameState.Dialogue)
         {
             if(!(dialogueController.activeSelf))
@@ -116,61 +111,74 @@ public class Game_Controller : MonoBehaviour
             }
         }
 
-        //Ha a battle véget ért és nyertünk
+        //Ha nyertünk a harcban
         else if(currentState == GameState.Win)
         {
             battleStarted = false;
             currentState = GameState.Outworld;
-            Outworld.SetActive(true);
+            worldUI.SetActive(true);
             enemy = null;
             Destroy(battleController);
         }
-        //Ha vesztettünk
+        //Ha vesztettünk a harcban
         else if(currentState == GameState.Lose)
         {
             battleStarted = false;
             Destroy(battleController);
             Debug.Log("Game Over");
-            needCleanup = true;
             currentState = GameState.MainMenu;
         }
     }
 
+    //Előkészíti a játékot az indulásra
     void Init(bool firstTime = false)
     {
         enemy = null;
-        Outworld.SetActive(true);
+        worldUI.SetActive(true);
         LoadLevel();
         InstantiateCharacter(firstTime);
         CreateMoveControl();
     }
 
-    void LoadLevel(int id = 0)
+    //Betölti az aktív pályát
+    void LoadLevel()
     {
         //Level létrehozás
-        level = Instantiate(dataController.levels[id]) as GameObject;
-        level.transform.parent = Outworld.transform;
+        level = Instantiate(dataController.levels[dataController.GetLevelId()]) as GameObject;
+        level.transform.parent = worldUI.transform;
     }
 
+    //Létrehozza és elhelyezi a megfelelő karaktert
     void InstantiateCharacter(bool firstTime)
     {
         //Karakter elhelyezés
         player = Instantiate(dataController.player[dataController.getPlayerID()]) as Character_Controller;
-        if(firstTime)
-            player.transform.position = level.transform.Find("SpawnPoint").transform.position;
+
+        //Ha új játékot indítottunk, akkor a spawn pointra rak
+        if (firstTime)
+        {
+            player.transform.position = GetSpawnPoint(level, "GameStartPoint");
+            player.character.ResetCharacter();
+        }
+        //Ellenkező esetben az elmentett pozícióra
         else
+        {
             PositionCharacter(player);
+        }
         player.transform.parent = level.transform;
+
+        //Prefab elnevezése
         player.name = "Player";
     }
 
+    //Movement controller létrehozás
     void CreateMoveControl()
     {
-        //Movement controller létrehozás
-        moveScript = MovementController.GetComponent<Player_Movement_Controller>();
+        moveScript = movementController.GetComponent<Player_Movement_Controller>();
         moveScript.AddPlayer(player);
     }
 
+    //Generál egy ellenséget
     Character CreateEnemy()
     {
         enemy = Instantiate(dataController.enemyList[0]) as Character;
@@ -178,25 +186,26 @@ public class Game_Controller : MonoBehaviour
         return enemy;
     }
 
+    //Elindítja a harcot a karakterünkkel és az enemy változóban lévő ellenséggel
     void StartBattle()
     {
         battleScript = battleController.GetComponent<BattleManager>();
         battleScript.Init(enemy, player.character);
     }
 
+    //Megjeleníti a harc képernyőt
     void BattleSetup()
     {
-        Outworld.SetActive(false);
+        worldUI.SetActive(false);
         battleController = Instantiate(battleControllerPrefab, Vector3.zero, Quaternion.identity);
     }
-    //Friss/új helyzetet teremt
+    //Tiszta lappal kezdéshez
     public void CleanUp()
     {
         dialogueController.GetComponent<Dialogue_Controller>().EndDialogue();
         Destroy(player);
         enemy = null;
         Destroy(level);
-        needCleanup = false;
     }
 
     //Menu gomb függvénye
@@ -206,13 +215,13 @@ public class Game_Controller : MonoBehaviour
             currentState = GameState.IngameMenu;
     }
 
-    //Heal dialog command
+    //Heal dialog parancs
     public void HealPlayer()
     {
         player.character.ResetHP();
     }
 
-    //Battle dialog command
+    //Battle dialog parancs
     public void BattleWithNPC(Character NPC)
     {
         enemy = NPC;
@@ -221,14 +230,18 @@ public class Game_Controller : MonoBehaviour
 
     }
 
+    //Elmenti a játékállást
     public void SaveGame()
     {
         var oldState = currentState;
         currentState = GameState.SaveGame;
-        Save_Controller.SaveGame(player,dataController.GetComponent<Data_Controller>().getPlayerID());
+        var playerId = dataController.GetComponent<Data_Controller>().getPlayerID();
+        var levelId = dataController.GetComponent<Data_Controller>().GetLevelId();
+        Save_Controller.SaveGame(player,playerId,levelId);
         currentState = oldState;
     }
 
+    //Betölti a mentett játékállást
     public void LoadGame()
     {
         var oldState = currentState;
@@ -238,8 +251,12 @@ public class Game_Controller : MonoBehaviour
         {
             dataController.GetComponent<Data_Controller>().ChangePosition(data.position);
             dataController.GetComponent<Data_Controller>().ChangePlayerId(data.playerId);
+            dataController.GetComponent<Data_Controller>().ChangeLevelId(data.levelId);
             CleanUp();
             Init(false);
+            player.character.SetLevel(data.playerLvl);
+            player.character.setElement(dataController.elements[data.elementId]);
+            player.character.SetCurrentHP(data.playerHP);
             currentState = GameState.Outworld;
         }
 
@@ -252,6 +269,7 @@ public class Game_Controller : MonoBehaviour
 
     }
 
+    //A kapott karaktert a Data Controllerben eltárolt mentett pozícióra rakja
     void PositionCharacter(Character_Controller player)
     {
         var positions = dataController.GetComponent<Data_Controller>().getPositions();
@@ -260,6 +278,20 @@ public class Game_Controller : MonoBehaviour
         newPosition.y = positions[1];
         newPosition.z = positions[2];
         player.transform.position = newPosition;
+    }
+
+    Vector3 GetSpawnPoint(GameObject level, string pointName)
+    {
+        return level.transform.Find("SpawnPoints/" + pointName).transform.position;
+    }
+
+    public void ChangeLevel(string destination)
+    {
+        player.transform.parent = worldUI.transform;
+        Destroy(level);
+        LoadLevel();
+        player.transform.parent = level.transform;
+        player.transform.position = GetSpawnPoint(this.level, destination);
     }
 
 

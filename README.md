@@ -12,7 +12,7 @@ Teljesített célok: Karakter létrehozás, Mentés és betöltés, Androidos ir
 NPC-k, Match3 játék alapjai, RPG és stat rendszer, Szintlépés, Alap UI és menürendszer.
 
 Beadásra tervezett további célok: Intro és játék közbeni történet dialógusok, Scriptek és osztályok finomítása/optimalizálása, Küldetések,
-Interakciók tárgyakkal, pár alap pálya NPC-kkel benépesítve.
+Interakciók tárgyakkal, pár alap pálya NPC-kkel benépesítve, Random encounter harcok bizonyos területeken.
 
 A projektet a leadáson túl is tervezem folytatni, mivel a játékfejlesztés témaköre érdekel.
 

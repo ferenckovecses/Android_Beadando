@@ -6,10 +6,13 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObject/Character", order = 1)]
 public class Character : ScriptableObject
 {
+	//Karakter neve
 	public string characterName = "Default Name";
+
+	//Harc közben használt sprite
 	public Sprite battleSprite;
 
-	//Base stats
+	//Alap értékek
 	public int baseHP=20;
 	public int baseAttack=55;
 	public int baseDefense=55;
@@ -19,10 +22,11 @@ public class Character : ScriptableObject
 	public int baseMovePower = 20;
 	public int baseXP = 64;
 	
+	//Párbeszédek
 	public Dialogue dialogue;
 
 
-	//Calculated stats
+	//Dinamikus értékek
 	int level = 1;
 	int experienceCap = 0;
 	int currentHP = 0;
@@ -31,22 +35,36 @@ public class Character : ScriptableObject
 	int currentMaxHP = 0;
 	int currentMovepower = 0;
 
+	public Sprite GetSprite()
+	{
+		return this.battleSprite;
+	}
+
+	//Típus beállítása
 	public void setElement(Elements element)
 	{
 		this.element = element;
 	}
 
+	//Típus id visszakérése
 	public int GetElementID()
 	{
 		return this.element.elementValue;
 	}
 
+	//Elem lekérése
+	public Elements GetElement()
+	{
+		return this.element;
+	}
+
+	//Név megváltoztatása
 	public void setName(string newName)
 	{
 		this.characterName = newName;
 	}
 
-	//Beállítja a karakter harci statjait
+	//Beállítja a karakter dinamikus statjait
 	public void Init()
 	{
 		this.experienceCap = (int)Mathf.Pow(this.level, 2f);
@@ -58,6 +76,7 @@ public class Character : ScriptableObject
 		this.currentMovepower = this.baseMovePower;
 	}
 
+	//Karakter konstruktor
 	public static Character CreateInstance()
 	{
 		var data = ScriptableObject.CreateInstance<Character>();
@@ -65,11 +84,13 @@ public class Character : ScriptableObject
 		return data;
 	}
 
+	//Támadás függvény
 	public bool Attack(Character opponent, int damage)
 	{
 		return opponent.GetDamaged(damage);
 	}
 
+	//Sebződés
 	public bool GetDamaged(int damage)
 	{
 		if(damage >= this.currentHP)
@@ -85,62 +106,68 @@ public class Character : ScriptableObject
 		}
 	}
 
+	//Jelenlegi szint lekérése
 	public int GetLevel()
 	{
 		return this.level;
 	}
 
+	//Jelenlegi szint beállítása
 	public void SetLevel(int newLevel)
 	{
 		this.level = newLevel;
 		Init();
 	}
 
+	//Jelenlegi támadás stat lekérése
 	public int GetAttack()
 	{
 		return this.currentAttack;
 	}
 
+	//Jelenlegi védelem lekérése
 	public int GetDefense()
 	{
 		return this.currentDefense;
 	}
 
+	//Jelenlegi támadás erejének lekérése
 	public int GetMovePower()
 	{
 		return this.currentMovepower;
 	}
 
-	public Elements GetElement()
-	{
-		return this.element;
-	}
-
+	//Jelenlegi HP lekérése
 	public int GetCurrentHP()
 	{
 		return this.currentHP;
 	}
 
+	//Jelenlegi HP beállítása
 	public void SetCurrentHP(int newHP)
 	{
 		this.currentHP = newHP;
 	}
 
+	//Visszaadja a HP textet csatához
 	public string GetHPStatus()
 	{
 		return "HP: " + this.currentHP.ToString() + "/" + this.currentMaxHP.ToString();
 	}
 
+	//Visszaadja a Lvl textet csatához
 	public string GetLevelText()
 	{
 		return "Lvl " + this.level.ToString();
 	}
 
+	//Visszaadja hogy a karakterünk él-e még
 	public bool NotDead()
 	{
 		return (this.currentHP != 0);
 	}
 
+	//XP szerzés
 	public void GetXP(int newXP)
 	{
 		if (this.level < 100)
@@ -159,6 +186,7 @@ public class Character : ScriptableObject
 		
 	}
 
+	//Szintlépés
 	void LevelUp(int newXP)
 	{
 		//Ha több az XP mint amennyi a level cap-be fér akkor a többletet továbbvisszük.
@@ -173,22 +201,26 @@ public class Character : ScriptableObject
 		GetXP(overflowXP);
 	}
 
+	//XP adás
 	public int GiveXP()
 	{
 		return (int)((1.5 * this.baseXP) / 7);
 	}
 
+	//Karakter resetelése
 	public void ResetCharacter()
 	{
 		this.level = this.baseLevel;
 		Init();
 	}
 
+	//Dialógus lejátszása
 	public void TriggerDialogue()
 	{
 		FindObjectOfType<Dialogue_Controller>().StartDialogue(this);
 	}
 
+	//HP resetelése/Full heal
 	public void ResetHP()
 	{
 		this.currentHP = this.currentMaxHP;

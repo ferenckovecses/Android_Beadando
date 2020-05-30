@@ -40974,8 +40974,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd941ad4d79b4484fae19b3817dcc9e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapID: 0
-  spawnPointName: Lab_Entrance
+  gate: {fileID: 0}
 --- !u!1 &1918028758507008230
 GameObject:
   m_ObjectHideFlags: 0
@@ -52579,7 +52578,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6320970425509585187}
   m_Layer: 0
-  m_Name: RightEntrancePoint
+  m_Name: Village_Entrance
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -52669,8 +52668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd941ad4d79b4484fae19b3817dcc9e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapID: 1
-  spawnPointName: Forest_Left_Entrance
+  gate: {fileID: 11400000, guid: 99c4e74652a288e4a8226719835811e0, type: 2}
 --- !u!1 &8595610713729901530
 GameObject:
   m_ObjectHideFlags: 0

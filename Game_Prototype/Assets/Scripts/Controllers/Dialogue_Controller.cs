@@ -8,8 +8,8 @@ public class Dialogue_Controller : MonoBehaviour
 {
     //Adathordozók
 	Queue<string> dialogues;
-    List<string> commands = new List<string>() {"HealPlayer()", "Battle()"};
-    Character speaker;
+    List<string> commands = new List<string>() {"HealPlayer()", "Battle()", "IndexUp()"};
+    NPC_Controller speaker;
     
     //Vezérlők
     Game_Controller gameController;
@@ -45,11 +45,11 @@ public class Dialogue_Controller : MonoBehaviour
     }
 
     //Elindítja a megadott karakter dialógusát
-    public void StartDialogue(Character character)
+    public void StartDialogue(NPC_Controller character)
     {
     	speaker = character;
         dialogues.Clear();
-        foreach(string sentence in speaker.dialogue.sentences)
+        foreach(string sentence in speaker.dialogues.dialogue[speaker.dialogues.dialogueIndex].sentences)
         {
             dialogues.Enqueue(sentence);
         }
@@ -78,7 +78,13 @@ public class Dialogue_Controller : MonoBehaviour
             //NPC harc
             else if(sentence == "Battle()")
             {
-                gameController.BattleWithNPC(speaker);
+                gameController.BattleWithNPC(speaker.character);
+            }
+
+            //Következő dialógus csoport
+            else if(sentence == "IndexUp()")
+            {
+                speaker.NextDialogue();
             }
 
             //Következő dialógus megjelenítése
@@ -89,7 +95,7 @@ public class Dialogue_Controller : MonoBehaviour
         {
             BoxDisplay(true);
             GameObject.Find("Dialogue_Text").GetComponent<TMP_Text>().text = sentence;
-            GameObject.Find("Dialogue_Name").GetComponent<TMP_Text>().text = speaker.characterName;
+            GameObject.Find("Dialogue_Name").GetComponent<TMP_Text>().text = speaker.character.characterName;
         }
 
     }

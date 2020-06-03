@@ -9,13 +9,13 @@ public class Data_Controller : MonoBehaviour
 {
     //Karakter prefabok és aktív prefab id
 	public List<Character_Controller> player;
-	int playerID = 0;
+	public int playerID = 0;
 
     //Aktív pálya id
-    int levelId = 0;
+    public int levelId = 0;
 
     //Karakter pozíciója, defaultban [0,0,0]
-    float[] position = new  float[3] {0f,0f,0f};
+    public float[] position = new  float[3] {0f,0f,0f};
 
     //A lehetséges ellenfelek asset listája
 	public List<Character> enemyList;
@@ -29,6 +29,8 @@ public class Data_Controller : MonoBehaviour
 
     //Interaction range-ben lévő karakter helye
     public NPC_Controller interactableCharacter;
+
+    public Player_Data data;
 
     
 
@@ -93,21 +95,21 @@ public class Data_Controller : MonoBehaviour
         {
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);
-            Player_Data data = formatter.Deserialize(stream) as Player_Data;
+            this.data = formatter.Deserialize(stream) as Player_Data;
 
             stream.Close();
 
             //Megnézzük, hogy a betöltött adatok érvényesek-e
-            if(data != null)
+            if(this.data != null)
             {
-                ChangePosition(data.position);
-                ChangePlayerId(data.playerId);
-                ChangeLevelId(data.levelId);
+                ChangePosition(this.data.position);
+                ChangePlayerId(this.data.playerId);
+                ChangeLevelId(this.data.levelId);
             }
 
             else
             {
-                Debug.Log("Betöltés Sikertelen!");
+                Debug.Log("Loading the game was unsuccessful!");
             }
 
         } 
@@ -115,8 +117,18 @@ public class Data_Controller : MonoBehaviour
         //Ha nincs még mentés file
         else
         {
-            Debug.Log("Save File not found!");
+            Debug.Log("Save file not found!");
         }
+    }
+
+    public Player_Data GetData()
+    {
+        return this.data;
+    }
+
+    public void DeleteData()
+    {
+        this.data = null;
     }
 
 
@@ -131,6 +143,7 @@ public class Data_Controller : MonoBehaviour
 
         formatter.Serialize(stream,data);
         stream.Close();
+        Debug.Log("Save Finished!");
     }
 }
 

@@ -7,17 +7,14 @@ public class NPC_Controller : MonoBehaviour
 	public Character character;
 	bool actionRange;
     Data_Controller dataController;
+    public CharacterDialogues dialogues;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         dataController = GameObject.Find("Data").GetComponent<Data_Controller>();
         actionRange = false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -41,6 +38,17 @@ public class NPC_Controller : MonoBehaviour
     public bool InRange()
     {
         return this.actionRange;
+    }
+
+    //Dialógus lejátszása
+    public void TriggerDialogue()
+    {
+        FindObjectOfType<Dialogue_Controller>().StartDialogue(this);
+    }
+
+    public void NextDialogue()
+    {
+        this.dialogues.dialogueIndex++;
     }
 
 }

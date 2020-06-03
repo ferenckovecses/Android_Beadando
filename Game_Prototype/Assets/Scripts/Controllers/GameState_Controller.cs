@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState {World_Creation, Outworld, Travelling, Dialogue,
+public enum GameState {MainMenu, CharacterCreation, LoadGame, NewGame, Outworld, Travelling, Dialogue,
  IngameMenu, NPCbattle, RandomEncounter, BattleSetup, Battle, Win, Lose};
 
 public class GameState_Controller : MonoBehaviour
@@ -12,7 +12,9 @@ public class GameState_Controller : MonoBehaviour
     void Start()
     {
         //Játék indulásakor a világ létrehozásával kezdünk
-        currentState = GameState.World_Creation;
+        currentState = GameState.MainMenu;
+
+        DontDestroyOnLoad (transform.gameObject);
     }
 
     public void ChangeGameState(GameState newState)

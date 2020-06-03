@@ -21,9 +21,6 @@ public class Character : ScriptableObject
 	public Elements element;
 	public int baseMovePower = 20;
 	public int baseXP = 64;
-	
-	//Párbeszédek
-	public Dialogue dialogue;
 
 
 	//Dinamikus értékek
@@ -158,7 +155,7 @@ public class Character : ScriptableObject
 	//Visszaadja a Lvl textet csatához
 	public string GetLevelText()
 	{
-		return "Lvl " + this.level.ToString();
+		return "Lvl: " + this.level.ToString();
 	}
 
 	//Visszaadja hogy a karakterünk él-e még
@@ -214,16 +211,34 @@ public class Character : ScriptableObject
 		Init();
 	}
 
-	//Dialógus lejátszása
-	public void TriggerDialogue()
-	{
-		FindObjectOfType<Dialogue_Controller>().StartDialogue(this);
-	}
-
 	//HP resetelése/Full heal
 	public void ResetHP()
 	{
 		this.currentHP = this.currentMaxHP;
+	}
+
+	public int GetMaxHP()
+	{
+		return this.currentMaxHP;
+	}
+
+	public int GetCurrentXP()
+	{
+		return this.currentXP;
+	}
+
+	public int GetMaxXP()
+	{
+		return this.experienceCap;
+	}
+
+	public void SetupCharacter(Player_Data data)
+	{
+		this.element = GameObject.Find("Data").GetComponent<Data_Controller>().elements[data.elementId];
+		this.level = data.playerLvl;
+		Init();
+		this.currentHP = data.playerHP;
+		this.currentXP = data.currentXP;
 	}
 
 }

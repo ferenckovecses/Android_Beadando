@@ -8,9 +8,6 @@ public class Game_Controller : MonoBehaviour
     //World UI
 	public GameObject worldUI;
 
-    //GameState vezérlő
-    public GameState_Controller gameState;
-
     //Input és mozgás kezelés
     public GameObject movementController;
 
@@ -25,6 +22,9 @@ public class Game_Controller : MonoBehaviour
 
     //Játék közbeni menü vezérlő
     public GameObject ingameMenuController;
+
+    //GameState vezérlő
+    GameState_Controller gameState;
 
 
     //Dinamikusan létrehozott elemek változói
@@ -49,17 +49,23 @@ public class Game_Controller : MonoBehaviour
 
         //Adatvezérlő referálása
         dataController = GameObject.Find("Data").GetComponent<Data_Controller>();
+        gameState = GameObject.Find("GameState").GetComponent<GameState_Controller>();
     }
 
 
     void Update()
     {
         //Világ létrehozása
-        if(gameState.GetGameState() == GameState.World_Creation)
+        if(gameState.GetGameState() == GameState.NewGame || gameState.GetGameState() == GameState.LoadGame)
         {
+            bool ifNewGame;
+            if(gameState.GetGameState() == GameState.NewGame)
+                ifNewGame = true;
+            else
+                ifNewGame = false;
 
             //Létrehozza a játékhoz szükséges dolgokat
-            Init(true);
+            Init(ifNewGame);
 
             //Átváltunk a játék fázisba
             gameState.ChangeGameState(GameState.Outworld);
@@ -102,7 +108,6 @@ public class Game_Controller : MonoBehaviour
         else if(gameState.GetGameState() == GameState.Win)
         {
             battleStarted = false;
-            gameState.ChangeGameState(GameState.Outworld);
             worldUI.SetActive(true);
             enemy = null;
             Destroy(battleController);
@@ -112,6 +117,8 @@ public class Game_Controller : MonoBehaviour
         {
             battleStarted = false;
             Destroy(battleController);
+            Destroy(GameObject.Find("Data"));
+            Destroy(GameObject.Find("GameState"));
             Debug.Log("Game Over");
             SceneManager.LoadScene("MainMenu");
         }
@@ -151,6 +158,8 @@ public class Game_Controller : MonoBehaviour
         else
         {
             PositionCharacter(player);
+            player.character.SetupCharacter(dataController.GetData());
+            dataController.DeleteData();
         }
         player.transform.parent = level.transform;
 

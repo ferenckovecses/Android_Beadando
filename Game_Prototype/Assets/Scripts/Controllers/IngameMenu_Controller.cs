@@ -72,6 +72,8 @@ public class IngameMenu_Controller : MonoBehaviour
     public void MainMenu()
     {
         HideMenu();
+        Destroy(GameObject.Find("Data"));
+        Destroy(GameObject.Find("GameState"));
     	SceneManager.LoadScene("MainMenu");
     }
 }

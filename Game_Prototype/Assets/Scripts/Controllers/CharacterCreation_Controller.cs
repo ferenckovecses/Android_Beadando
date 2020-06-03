@@ -121,6 +121,7 @@ public class CharacterCreation_Controller : MonoBehaviour
     public void CreateCharacter()
     {
         dataController.SetCharacter(spriteID,nameField.text,GetElementId(signID));
+        GameObject.Find("GameState").GetComponent<GameState_Controller>().ChangeGameState(GameState.NewGame);
         SceneManager.LoadScene("Game");
     }
 

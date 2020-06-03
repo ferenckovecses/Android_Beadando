@@ -12,11 +12,14 @@ public class Battle_Controller : MonoBehaviour
     BattleState currentBattleState;
     Character enemy;
     Character player;
-    public GameObject scene;
-    GameObject activeScene;
     GameState_Controller gameState;
     Data_Controller dataController;
     Image playerSprite;
+
+    public Slider playerHPSlider;
+    public Slider playerXpSlider;
+    public Slider enemyHPSlider;
+    public Slider enemyXpSlider;
 
     // Start is called before the first frame update
     void Start()
@@ -31,8 +34,6 @@ public class Battle_Controller : MonoBehaviour
     {
         this.enemy = enemy;
         this.player = player;
-        activeScene = Instantiate(scene) as GameObject;
-        activeScene.transform.parent = gameObject.transform;
         SetupUI();
     }
 
@@ -48,6 +49,8 @@ public class Battle_Controller : MonoBehaviour
         GameObject.Find("Enemy_HP").GetComponent<TMP_Text>().text = enemy.GetHPStatus();
         GameObject.Find("Player_Lvl").GetComponent<TMP_Text>().text = player.GetLevelText();
         GameObject.Find("Enemy_Lvl").GetComponent<TMP_Text>().text = enemy.GetLevelText();
+
+        SetupBar();
 
         var escapeButton = GameObject.Find("Escape_Button").GetComponent<Button>();
         escapeButton.onClick.AddListener(delegate{EscapeBattle();});
@@ -111,6 +114,7 @@ public class Battle_Controller : MonoBehaviour
 
     void ResetHP()
     {
+        SetHealth();
         GameObject.Find("Player_HP").GetComponent<TMP_Text>().text = player.GetHPStatus();
         GameObject.Find("Enemy_HP").GetComponent<TMP_Text>().text = enemy.GetHPStatus();
     }
@@ -131,6 +135,7 @@ public class Battle_Controller : MonoBehaviour
             if(player.NotDead())
             {
                 player.GetXP(enemy.GiveXP());
+                SetupBar();
                 gameState.ChangeGameState(GameState.Win);
             }
 
@@ -142,6 +147,25 @@ public class Battle_Controller : MonoBehaviour
     public BattleState GetBattleState()
     {
         return this.currentBattleState;
+    }
+
+    void SetHealth()
+    {
+        playerHPSlider.value = player.GetCurrentHP();
+        enemyHPSlider.value = enemy.GetCurrentHP();
+    }
+
+    void SetupBar()
+    {
+        playerHPSlider.value = player.GetCurrentHP();
+        playerHPSlider.maxValue = player.GetMaxHP();
+        playerXpSlider.value = player.GetCurrentXP();
+        playerXpSlider.maxValue = player.GetMaxXP();
+
+        enemyHPSlider.value = enemy.GetCurrentHP();
+        enemyHPSlider.maxValue = enemy.GetMaxHP();
+        enemyXpSlider.value = enemy.GetCurrentXP();
+        enemyXpSlider.maxValue = enemy.GetMaxXP();
     }
 
 }

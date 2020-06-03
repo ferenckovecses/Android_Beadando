@@ -106,7 +106,7 @@ public class Player_Movement_Controller : MonoBehaviour
             && gameState.GetGameState() == GameState.Outworld)
         {
             gameState.ChangeGameState(GameState.Dialogue);
-            dataController.interactableCharacter.character.TriggerDialogue();
+            dataController.interactableCharacter.TriggerDialogue();
         }
     }
 }

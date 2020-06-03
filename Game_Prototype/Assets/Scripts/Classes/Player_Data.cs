@@ -12,6 +12,7 @@ public class Player_Data
     public int playerHP;
     public int levelId;
     public int elementId;
+    public int currentXP;
     public string characterName;
 
 
@@ -22,6 +23,7 @@ public class Player_Data
         this.playerId = playerId;
         this.playerLvl = player.character.GetLevel();
         this.playerHP = player.character.GetCurrentHP();
+        this.currentXP = player.character.GetCurrentXP();
         this.position = new float[3];
         this.position[0] = player.transform.position.x;
         this.position[1] = player.transform.position.y;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum GameState {MainMenu, CharacterCreation, LoadGame, NewGame, Outworld, Travelling, Dialogue,
- IngameMenu, NPCbattle, RandomEncounter, BattleSetup, Battle, Win, Lose};
+ IngameMenu, NPCbattle, RandomEncounter, BattleSetup, Battle, Win, Lose, Escaped, BattleEnded};
 
 public class GameState_Controller : MonoBehaviour
 {

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e31a9486c1583e429064db295a180e5, type: 3}
+  m_Name: Pidgey
+  m_EditorClassIdentifier: 
+  characterName: Pidgey
+  battleSprite: {fileID: 21300000, guid: bb6d52c5adc228b4f94096b87e2a3d14, type: 3}
+  baseHP: 40
+  baseAttack: 45
+  baseDefense: 40
+  baseLevel: 5
+  currentXP: 0
+  element: {fileID: 11400000, guid: 1e4c28ad925c0fc4ea5cd5d6928a52d0, type: 2}
+  baseMovePower: 10
+  baseXP: 32

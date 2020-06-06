@@ -4,7 +4,7 @@ public class Player_Movement_Controller : MonoBehaviour
 {
 
     float moveSpeed = 5f;
-
+    bool isMoving = false;
     public Character_Controller player;
     public Joystick joystick;
 
@@ -90,7 +90,17 @@ public class Player_Movement_Controller : MonoBehaviour
     void FixedUpdate()
     {
         if(gameState.GetGameState() == GameState.Outworld)
-    	   player.rb.MovePosition(player.rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        {
+            if(movement.x != 0 || movement.y != 0)
+            {
+                isMoving = true;
+            }
+            else
+            {
+                isMoving = false;
+            }
+    	    player.rb.MovePosition(player.rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        }
     }
 
     void Start()
@@ -101,12 +111,25 @@ public class Player_Movement_Controller : MonoBehaviour
 
     public void ActionButton()
     {
-        if(dataController.interactableCharacter != null 
-            && dataController.interactableCharacter.InRange() 
+        if(dataController.GetNPC() != null 
+            && dataController.GetObject() == null
+            && dataController.GetNPC().InRange() 
             && gameState.GetGameState() == GameState.Outworld)
         {
-            gameState.ChangeGameState(GameState.Dialogue);
-            dataController.interactableCharacter.TriggerDialogue();
+            dataController.GetNPC().TriggerDialogue();
         }
+
+        else if(dataController.GetNPC() == null
+            && dataController.GetObject() != null
+            && dataController.GetObject().InRange()
+            && gameState.GetGameState() == GameState.Outworld)
+        {
+            dataController.GetObject().TriggerDialogue();
+        }
+    }
+
+    public bool IsTheCharacterMoving()
+    {
+        return this.isMoving;
     }
 }

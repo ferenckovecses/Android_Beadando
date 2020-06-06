@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e22d934d37d7fe4993ab85a1a8366a6, type: 3}
   m_Name: Air
   m_EditorClassIdentifier: 
-  elementName: Air
+  elementName: "Leveg\u0151"
   sprite: {fileID: 5892887444880507587, guid: 7aaf9d191b7c1d24aa3aee535f16b89a, type: 3}
   elementValue: 1
   weakTo:

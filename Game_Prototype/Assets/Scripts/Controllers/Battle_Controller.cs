@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public enum BattleState {PlayerTurn, EnemyTurn, Endgame};
+public enum BattleState {PlayerTurn, EnemyTurn, Endgame, Win, Lose, Escaped};
 
 public class Battle_Controller : MonoBehaviour
 {
@@ -45,6 +45,8 @@ public class Battle_Controller : MonoBehaviour
         GameObject.Find("Enemy_Name").GetComponent<TMP_Text>().text = enemy.characterName;
         GameObject.Find("Player_Type_Image").GetComponent<Image>().sprite = player.element.returnSprite();
         GameObject.Find("Enemy_Type_Image").GetComponent<Image>().sprite = enemy.element.returnSprite();
+        GameObject.Find("Player_Type_Name").GetComponent<TMP_Text>().text = player.element.returnName();
+        GameObject.Find("Enemy_Type_Name").GetComponent<TMP_Text>().text = enemy.element.returnName();
         GameObject.Find("Player_HP").GetComponent<TMP_Text>().text = player.GetHPStatus();
         GameObject.Find("Enemy_HP").GetComponent<TMP_Text>().text = enemy.GetHPStatus();
         GameObject.Find("Player_Lvl").GetComponent<TMP_Text>().text = player.GetLevelText();
@@ -59,9 +61,15 @@ public class Battle_Controller : MonoBehaviour
     public void EscapeBattle()
     {
         if(gameState.GetGameState() == GameState.NPCbattle)
-            Debug.Log("There's no escape option in NPC Battles!");
-        else
-            gameState.ChangeGameState(GameState.Win);
+        {
+            Debug.Log("NPC harcokból nincs menekülés");
+        }
+        else if(gameState.GetGameState() == GameState.RandomEncounter)
+        {
+            currentBattleState = BattleState.Escaped;
+            gameState.ChangeGameState(GameState.BattleEnded);
+        }
+
     }
 
     public int CalculateDamage(int typeID)
@@ -136,11 +144,15 @@ public class Battle_Controller : MonoBehaviour
             {
                 player.GetXP(enemy.GiveXP());
                 SetupBar();
-                gameState.ChangeGameState(GameState.Win);
+                currentBattleState = BattleState.Win;
+                gameState.ChangeGameState(GameState.BattleEnded);
             }
 
             else
-                gameState.ChangeGameState(GameState.Lose);
+            {
+                currentBattleState = BattleState.Lose;
+                gameState.ChangeGameState(GameState.BattleEnded);
+            }
         }
     }
 

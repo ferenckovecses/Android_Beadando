@@ -17,9 +17,6 @@ public class Data_Controller : MonoBehaviour
     //Karakter pozíciója, defaultban [0,0,0]
     public float[] position = new  float[3] {0f,0f,0f};
 
-    //A lehetséges ellenfelek asset listája
-	public List<Character> enemyList;
-
     //A lehetséges pályák listája
 	public List<GameObject> levels;
 
@@ -28,9 +25,12 @@ public class Data_Controller : MonoBehaviour
     Character enemy;
 
     //Interaction range-ben lévő karakter helye
-    public NPC_Controller interactableCharacter;
+    NPC_Controller interactableCharacter;
 
-    public Player_Data data;
+    //Interaction range-ben lévő objektum
+    InteractableObject interactableObject; 
+
+    Player_Data data;
 
     
 
@@ -42,6 +42,40 @@ public class Data_Controller : MonoBehaviour
         //Képernyőarányok fixálása
         Screen.SetResolution(1920,1080,true);
     }
+
+
+    public void AddNPC(NPC_Controller npc)
+    {
+        interactableObject = null;
+        interactableCharacter = npc;
+    }
+
+    public NPC_Controller GetNPC()
+    {
+        return this.interactableCharacter;
+    }
+
+    public void AddObject(InteractableObject objectInRange)
+    {
+        interactableCharacter = null;
+        interactableObject = objectInRange;
+    }
+
+    public InteractableObject GetObject()
+    {
+        return this.interactableObject;
+    }
+
+    public void RemoveNPC()
+    {
+        interactableCharacter = null;
+    }
+
+    public void RemoveObject()
+    {
+        interactableObject = null;
+    }
+
 
     //Megváltoztatja az aktív karakter id-t és az aktív karakter nevét és típusát
     public void SetCharacter(int id, string name, int elementID)

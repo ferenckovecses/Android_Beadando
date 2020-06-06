@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5764255070a7349479aa001a03c490f2, type: 3}
+  m_Name: Emily
+  m_EditorClassIdentifier: 
+  dialogueIndex: 0
+  dialogue:
+  - sentences:
+    - "Szia, Emily vagyok, az \xE9n feladatom hogy instrukci\xF3kat adjak, hogy jobb
+      lehess a harcokban. Az els\u0151 \xE9s egyben legfontosabb lecke a term\xE9szet
+      elemeinek ismerete:"
+    - "A T\u0171z er\u0151sebb egy Leveg\u0151 elem\u0171 l\xE9nnyel szemben, viszont
+      a V\xEDz elem\u0171ek t\xE1mad\xE1sai jobban hatnak r\xE1juk."
+    - "A V\xEDz er\u0151sebb a T\u0171z ellen, viszont alulmarad a F\xF6ld elem\u0171ekkel
+      szemben."
+    - "A F\xF6ld elem\u0171ek ellen a Leveg\u0151 t\xE1mad\xE1sok er\u0151sebbek."
+    - "A Leveg\u0151 t\xE1mad\xE1sok pedig az el\u0151bbiek alapj\xE1n er\u0151sebb
+      a F\xF6ld elem\u0171ekkel szemben, viszont a T\u0171z er\u0151sebb n\xE1la."
+    - "A nagymesterek k\xE9pesek a F\xE9ny \xE9s S\xF6t\xE9ts\xE9g elemeit is haszn\xE1lni,
+      \u0151k egym\xE1ssal szemben hat\xE1sosak. "
+    - "Rem\xE9lem \xE9rthet\u0151 volt, ha elfelejteted csak k\xE9rdezz \xFAjra!"
+    - IndexUp()
+  - sentences:
+    - "Hogy haladnak a tanulm\xE1nyaid? Mit sz\xF3lsz egy kis ism\xE9tl\xE9shez?"
+    - "A T\u0171z er\u0151sebb a Leveg\u0151vel szemben.\nA Leveg\u0151 er\u0151sebb
+      a F\xF6lddel szemben."
+    - "A F\xF6ld er\u0151sebb a V\xEDzzel szemben.\nA V\xEDz er\u0151sebb a T\u0171zzel
+      szemben."
+    - "A F\xE9ny \xE9s a S\xF6t\xE9ts\xE9g csak egym\xE1sra van hat\xE1ssal."
+    - "Rem\xE9lem tudtam seg\xEDteni, ha kell egy kis keress fel \xFAjra! "

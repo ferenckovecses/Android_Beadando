@@ -13,6 +13,10 @@ public class CharacterCreation_Controller : MonoBehaviour
 
     //UI elemek
 	TMP_Text sign;
+    TMP_Text elementName;
+    Image element;
+    Image elementNext;
+    Image elementPrev;
 	InputField nameField;
     GameObject firstPanel;
     GameObject secondPanel;
@@ -26,8 +30,8 @@ public class CharacterCreation_Controller : MonoBehaviour
         //Változók alapértelmezése
         signID = 0;
         spriteID = 0;
-        signList = new string[12] {"Aries","Leo","Sagittarius","Gemini","Libra","Aquarius","Cancer",
-        "Scorpio","Pisces","Taurus","Virgo","Capricorn"};
+        signList = new string[12] {"Kos","Oroszlán","Nyilas","Ikrek","Mérleg","Vízöntő","Rák",
+        "Skorpió","Halak","Bika","Szűz","Bak"};
 
         //Dinamikus UI szegmensek referálása
         firstPanel = GameObject.Find("First_Part");
@@ -36,6 +40,11 @@ public class CharacterCreation_Controller : MonoBehaviour
 
         secondPanel = GameObject.Find("Second_Part");
         sign = GameObject.Find("Sign_Text").GetComponent<TMP_Text>();
+        elementName = GameObject.Find("Element_Text").GetComponent<TMP_Text>();
+
+        element = GameObject.Find("Element_Image").GetComponent<Image>();
+        elementNext = GameObject.Find("Next_Element_Image").GetComponent<Image>();
+        elementPrev = GameObject.Find("Previous_Element_Image").GetComponent<Image>();
         secondPanel.SetActive(false);
 
 
@@ -62,6 +71,28 @@ public class CharacterCreation_Controller : MonoBehaviour
     void RefreshSign()
     {
     	sign.text = signList[signID];
+        var elementID = GetElementId(signID);
+        elementName.text = dataController.elements[elementID].returnName();
+
+        element.sprite = dataController.elements[elementID].returnSprite();
+
+        if(elementID == 3)
+        {
+            elementPrev.sprite = dataController.elements[elementID-1].returnSprite();
+            elementNext.sprite = dataController.elements[0].returnSprite();
+        }
+
+        else if(elementID == 0)
+        {
+            elementPrev.sprite = dataController.elements[3].returnSprite();
+            elementNext.sprite = dataController.elements[elementID+1].returnSprite();
+        }
+
+        else
+        {
+            elementPrev.sprite = dataController.elements[elementID-1].returnSprite();
+            elementNext.sprite = dataController.elements[elementID+1].returnSprite();
+        }
     }
 
     //Default nevek megjelenítése placeholdernek

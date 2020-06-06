@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +10,7 @@ public class Dialogue_Controller : MonoBehaviour
 	Queue<string> dialogues;
     List<string> commands = new List<string>() {"HealPlayer()", "Battle()", "IndexUp()"};
     NPC_Controller speaker;
+    GameState prev;
     
     //Vezérlők
     Game_Controller gameController;
@@ -33,7 +34,7 @@ public class Dialogue_Controller : MonoBehaviour
     //Létrehozza a dialógus képernyőt
     void CreateBox()
     {
-        dialogueBox = Instantiate(dialogueUI, GameObject.Find("UI Canvas").transform);
+        dialogueBox = Instantiate(dialogueUI, GameObject.Find("HUD").transform);
         var nextButton = GameObject.Find("Dialogue_Button").GetComponent<Button>();
         nextButton.onClick.AddListener(delegate{DisplayNextSentence();}); 
     }
@@ -47,9 +48,27 @@ public class Dialogue_Controller : MonoBehaviour
     //Elindítja a megadott karakter dialógusát
     public void StartDialogue(NPC_Controller character)
     {
+
+        prev = gameState.GetGameState();
+        gameState.ChangeGameState(GameState.Dialogue);
+
     	speaker = character;
         dialogues.Clear();
-        foreach(string sentence in speaker.dialogues.dialogue[speaker.dialogues.dialogueIndex].sentences)
+        foreach(string sentence in speaker.dialogues.GetActiveDialogues())
+        {
+            dialogues.Enqueue(sentence);
+        }
+        DisplayNextSentence();
+    }
+
+    //Elindítja a megadott objektum dialógusát
+    public void StartDialogue(InteractableObject objectInRange)
+    {
+        prev = gameState.GetGameState();
+        gameState.ChangeGameState(GameState.Dialogue);
+
+        dialogues.Clear();
+        foreach(string sentence in objectInRange.GetDialogues())
         {
             dialogues.Enqueue(sentence);
         }
@@ -94,8 +113,20 @@ public class Dialogue_Controller : MonoBehaviour
         else
         {
             BoxDisplay(true);
+
             GameObject.Find("Dialogue_Text").GetComponent<TMP_Text>().text = sentence;
-            GameObject.Find("Dialogue_Name").GetComponent<TMP_Text>().text = speaker.character.characterName;
+
+            //Kiírja az NPC nevét
+            if(speaker != null)
+            {
+                GameObject.Find("Dialogue_Name").GetComponent<TMP_Text>().text = speaker.characterName;
+            }
+            
+            //Vagy a miénket, ha épp objektumot vizsgálunk
+            else
+            {
+                GameObject.Find("Dialogue_Name").GetComponent<TMP_Text>().text = gameController.GetPlayer().GetName();
+            }
         }
 
     }
@@ -103,8 +134,18 @@ public class Dialogue_Controller : MonoBehaviour
     //Visszatérés a játékba és a box eltüntetése
     public void EndDialogue()
     {
-        gameState.ChangeGameState(GameState.Outworld);
+        speaker = null;
+        gameState.ChangeGameState(prev);
         BoxDisplay(false);
+    }
+
+    //Megjelenít egy megadott üzenetet a dialog ablakkal
+    public void DisplayText(string textToDisplay)
+    {
+        prev = gameState.GetGameState();
+        dialogues.Clear();
+        dialogues.Enqueue(textToDisplay);
+        DisplayNextSentence();
     }
 
 }

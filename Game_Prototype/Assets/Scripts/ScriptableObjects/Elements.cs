@@ -16,6 +16,11 @@ public class Elements : ScriptableObject
     	return this.sprite;
     }
 
+    public string returnName()
+    {
+        return this.elementName;
+    }
+
     public int getValue()
     {
     	return this.elementValue;

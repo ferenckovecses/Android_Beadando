@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e22d934d37d7fe4993ab85a1a8366a6, type: 3}
   m_Name: Fire
   m_EditorClassIdentifier: 
-  elementName: Fire
+  elementName: "T\u0171z"
   sprite: {fileID: 1672932990299466674, guid: 7aaf9d191b7c1d24aa3aee535f16b89a, type: 3}
   elementValue: 0
   weakTo:

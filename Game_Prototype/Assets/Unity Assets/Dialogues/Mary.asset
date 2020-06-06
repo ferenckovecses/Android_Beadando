@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5764255070a7349479aa001a03c490f2, type: 3}
+  m_Name: Mary
+  m_EditorClassIdentifier: 
+  dialogueIndex: 0
+  dialogue:
+  - sentences:
+    - "A h\xE1zamt\xF3l jobbra tal\xE1lhat\xF3 az \xE1tj\xE1r\xF3 az erd\u0151be.
+      A k\xF6z\xF6ss\xE9g\xFCnk fiatal tagjai ott fejleszthetik harck\xE9pess\xE9geiket
+      az erd\u0151 l\xE9nyein."
+    - "L\xE9gy \xF3vatos vel\xFCk, egy \xFAjonc sz\xE1m\xE1ra vesz\xE9lyes lehet
+      az erd\u0151 vil\xE1ga."

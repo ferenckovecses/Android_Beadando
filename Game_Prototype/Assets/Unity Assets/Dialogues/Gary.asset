@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5764255070a7349479aa001a03c490f2, type: 3}
+  m_Name: Gary
+  m_EditorClassIdentifier: 
+  dialogueIndex: 0
+  dialogue:
+  - sentences:
+    - "Hello! Az \xE9n nevem Gary, \xE9n vagyok ennek a falunak a vezet\u0151je.
+      A feladatom, hogy megv\xE9djem a lak\xF3kat \xE9s kik\xE9pezzem \u0151ket."
+    - "Neked, mint \xFAjoncnak \xE1t kell esned a beavat\xE1son, sz\xF3val kapd \xF6ssze
+      magad \xE9s k\xE9sz\xFClj a harcra!"
+    - Battle()
+    - "Ez egy remek harc volt, alig v\xE1rom a k\xF6vetkez\u0151 menetet! Menj, keresd
+      meg Dean-t, \u0151 a falu gy\xF3gy\xEDt\xF3ja, hozdd rendbe magad!"
+    - IndexUp()
+  - sentences:
+    - "\xDCdv \xFAjra itt! K\xE9szen \xE1llsz a k\xF6vetkez\u0151 hacra?"
+    - Battle()
+    - "Fantasztikus, egyre er\u0151sebb vagy! Biztos vagyok benne hogy hatalmas seg\xEDts\xE9get
+      fogsz jelenteni a falunk sz\xE1m\xE1ra!"

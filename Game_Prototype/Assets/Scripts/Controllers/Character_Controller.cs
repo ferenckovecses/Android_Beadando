@@ -12,4 +12,9 @@ public class Character_Controller : MonoBehaviour
         this.character.setName(name);
         this.character.ResetCharacter();
     }
+
+    public string GetName()
+    {
+    	return this.character.characterName;
+    }
 }

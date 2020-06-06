@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5764255070a7349479aa001a03c490f2, type: 3}
+  m_Name: Harry
+  m_EditorClassIdentifier: 
+  dialogueIndex: 0
+  dialogue:
+  - sentences:
+    - "Harry vagyok, nemr\xE9g \xE9rkeztem a boltommal a faluba. M\xE9g nem vagyok
+      sajnos nyit\xE1sra k\xE9sz."
+    - "Gyere vissza k\xE9s\u0151bb \xE9s remek \xE9s \xE9rt\xE9kes t\xE1rgyakat v\xE1s\xE1rolhatsz
+      t\u0151lem!"
+    - IndexUp()
+  - sentences:
+    - "Sajn\xE1lom, m\xE9g nem vagyok k\xE9sz az el\u0151k\xE9sz\xFCletekkel. "

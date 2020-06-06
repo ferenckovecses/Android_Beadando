@@ -1,28 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public enum GameState {MainMenu, LoadGame, SaveGame, Character_Creation, World_Creation, Outworld, Travelling, Dialogue,
- IngameMenu, NPCbattle, RandomEncounter, BattleSetup, Battle, SpellBook, Win, Lose};
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 public class Game_Controller : MonoBehaviour
 {
     //World UI
 	public GameObject worldUI;
+
     //Input és mozgás kezelés
     public GameObject movementController;
+
     //Battle controller prefab, harc esetén felbontandó
     public GameObject battleControllerPrefab;
+
     //A fontos adatok eléréshez és tárolásához az adatvezérlő.
-    public Data_Controller dataController;
+    Data_Controller dataController;
+
     //Dialógus vezérlő
     public GameObject dialogueController;
-    //Főmenü vezérlő
-    public GameObject mainMenuController;
-    //Karakter létrehozás vezérlő
-    public GameObject characterCreationController;
+
     //Játék közbeni menü vezérlő
     public GameObject ingameMenuController;
+
+    //GameState vezérlő
+    GameState_Controller gameState;
 
 
     //Dinamikusan létrehozott elemek változói
@@ -35,64 +39,60 @@ public class Game_Controller : MonoBehaviour
 
     //Játék közben használt scriptek
     Player_Movement_Controller moveScript;
-    BattleManager battleScript;
+    Battle_Controller battleScript;
 
     //Játék aktuális státuszát tartalmazó változó
-    public GameState currentState;
-
     public bool battleStarted;
+
+    //HUD UI elemek
+    public TMP_Text LvlText;
+    public TMP_Text LvlStatus;
+    public TMP_Text HPStatus;
+    public Slider playerHPSlider;
+    public Slider playerXpSlider;
 
     void Start()
     {
-        //Képernyőarányok fixálása
-        Screen.SetResolution(1920,1080,true);
-
         //Alaphelyzet beállítása
         battleStarted = false;
 
-        //Játék indulásakor a menüben kezdünk
-        currentState = GameState.MainMenu;
+        //Adatvezérlő referálása
+        dataController = GameObject.Find("Data").GetComponent<Data_Controller>();
+        gameState = GameObject.Find("GameState").GetComponent<GameState_Controller>();
     }
-
 
     void Update()
     {
-        //Főmenü fázis
-        if(currentState == GameState.MainMenu)
-        {
-
-            if(worldUI.activeSelf)
-            {
-                worldUI.SetActive(false);
-            }
-        }
-
         //Világ létrehozása
-        else if(currentState == GameState.World_Creation)
+        if(gameState.GetGameState() == GameState.NewGame || gameState.GetGameState() == GameState.LoadGame)
         {
+            bool ifNewGame;
+            if(gameState.GetGameState() == GameState.NewGame)
+                ifNewGame = true;
+            else
+                ifNewGame = false;
 
             //Létrehozza a játékhoz szükséges dolgokat
-            Init(true);
+            Init(ifNewGame);
 
             //Átváltunk a játék fázisba
-            currentState = GameState.Outworld;
+            gameState.ChangeGameState(GameState.Outworld);
         }
 
         //Ha random ellenféllel találkozunk
-        else if(currentState == GameState.RandomEncounter)
+        else if(gameState.GetGameState() == GameState.RandomEncounter)
         {
             if(!battleStarted)
             {
-                enemy = CreateEnemy();
-                BattleSetup();
                 battleStarted = true;
+                BattleSetup();
                 StartBattle();
             }
 
         }
 
         //Ha NPC-vel harcot kezdünk
-        else if(currentState == GameState.NPCbattle)
+        else if(gameState.GetGameState() == GameState.NPCbattle)
         {
             if(!battleStarted)
             {
@@ -103,7 +103,7 @@ public class Game_Controller : MonoBehaviour
         }
 
         //Ha dialógus játszódik épp
-        else if(currentState == GameState.Dialogue)
+        else if(gameState.GetGameState() == GameState.Dialogue)
         {
             if(!(dialogueController.activeSelf))
             {
@@ -111,23 +111,32 @@ public class Game_Controller : MonoBehaviour
             }
         }
 
-        //Ha nyertünk a harcban
-        else if(currentState == GameState.Win)
+        //Ha vége a harcnak
+        else if(gameState.GetGameState() == GameState.BattleEnded)
         {
+            gameState.ChangeGameState(GameState.Outworld);
             battleStarted = false;
-            currentState = GameState.Outworld;
             worldUI.SetActive(true);
             enemy = null;
+            RefreshHUD();
+
+
+            if(battleController.GetComponent<Battle_Controller>().GetBattleState() == BattleState.Lose)
+            {
+                Faint();
+            }
+
+            if(battleController.GetComponent<Battle_Controller>().GetBattleState() == BattleState.Escaped)
+            {
+                string message = "Sikeresen elmenekültél a harcból!";
+                GameObject.Find("Dialogue").GetComponent<Dialogue_Controller>().DisplayText(message);
+            }
+
             Destroy(battleController);
+
         }
-        //Ha vesztettünk a harcban
-        else if(currentState == GameState.Lose)
-        {
-            battleStarted = false;
-            Destroy(battleController);
-            Debug.Log("Game Over");
-            currentState = GameState.MainMenu;
-        }
+
+        
     }
 
     //Előkészíti a játékot az indulásra
@@ -164,11 +173,16 @@ public class Game_Controller : MonoBehaviour
         else
         {
             PositionCharacter(player);
+            player.character.SetupCharacter(dataController.GetData());
+            dataController.DeleteData();
         }
         player.transform.parent = level.transform;
 
         //Prefab elnevezése
         player.name = "Player";
+
+        //Élet és XP slider beállítása
+        RefreshHUD();
     }
 
     //Movement controller létrehozás
@@ -178,18 +192,10 @@ public class Game_Controller : MonoBehaviour
         moveScript.AddPlayer(player);
     }
 
-    //Generál egy ellenséget
-    Character CreateEnemy()
-    {
-        enemy = Instantiate(dataController.enemyList[0]) as Character;
-        enemy.Init();
-        return enemy;
-    }
-
     //Elindítja a harcot a karakterünkkel és az enemy változóban lévő ellenséggel
     void StartBattle()
     {
-        battleScript = battleController.GetComponent<BattleManager>();
+        battleScript = battleController.GetComponent<Battle_Controller>();
         battleScript.Init(enemy, player.character);
     }
 
@@ -199,74 +205,34 @@ public class Game_Controller : MonoBehaviour
         worldUI.SetActive(false);
         battleController = Instantiate(battleControllerPrefab, Vector3.zero, Quaternion.identity);
     }
-    //Tiszta lappal kezdéshez
-    public void CleanUp()
-    {
-        dialogueController.GetComponent<Dialogue_Controller>().EndDialogue();
-        Destroy(player);
-        enemy = null;
-        Destroy(level);
-    }
 
     //Menu gomb függvénye
     public void IngameMenu()
     {
-        if(currentState == GameState.Outworld)
-            currentState = GameState.IngameMenu;
+        if(gameState.GetGameState() == GameState.Outworld)
+            gameState.ChangeGameState(GameState.IngameMenu);
     }
 
     //Heal dialog parancs
     public void HealPlayer()
     {
         player.character.ResetHP();
+        RefreshHUD();
     }
 
     //Battle dialog parancs
     public void BattleWithNPC(Character NPC)
     {
         enemy = NPC;
-        enemy.Init();
-        currentState = GameState.NPCbattle;
+        enemy.ResetCharacter();
+        gameState.ChangeGameState(GameState.NPCbattle);
 
     }
 
-    //Elmenti a játékállást
-    public void SaveGame()
+    public void BattleWithEncounter(Character encounter)
     {
-        var oldState = currentState;
-        currentState = GameState.SaveGame;
-        var playerId = dataController.GetComponent<Data_Controller>().getPlayerID();
-        var levelId = dataController.GetComponent<Data_Controller>().GetLevelId();
-        Save_Controller.SaveGame(player,playerId,levelId);
-        currentState = oldState;
-    }
-
-    //Betölti a mentett játékállást
-    public void LoadGame()
-    {
-        var oldState = currentState;
-        currentState = GameState.SaveGame;
-        Player_Data data = Save_Controller.LoadGame();
-        if(data != null)
-        {
-            dataController.GetComponent<Data_Controller>().ChangePosition(data.position);
-            dataController.GetComponent<Data_Controller>().ChangePlayerId(data.playerId);
-            dataController.GetComponent<Data_Controller>().ChangeLevelId(data.levelId);
-            CleanUp();
-            Init(false);
-            player.character.SetLevel(data.playerLvl);
-            player.character.setElement(dataController.elements[data.elementId]);
-            player.character.SetCurrentHP(data.playerHP);
-            currentState = GameState.Outworld;
-        }
-
-        else
-        {
-            Debug.Log("Betöltés Sikertelen!");
-            currentState = oldState;
-        }
-
-
+        enemy = encounter;
+        gameState.ChangeGameState(GameState.RandomEncounter);
     }
 
     //A kapott karaktert a Data Controllerben eltárolt mentett pozícióra rakja
@@ -294,5 +260,36 @@ public class Game_Controller : MonoBehaviour
         player.transform.position = GetSpawnPoint(this.level, destination);
     }
 
+    public void SaveGame()
+    {
+        dataController.SaveGame(player);
+    }
+
+    public Character_Controller GetPlayer()
+    {
+        return this.player;
+    }
+
+    void Faint()
+    {
+        dataController.ChangeLevelId(0);
+        ChangeLevel("FaintSpawnPoint"); 
+        HealPlayer();
+        string textToDisplay = "A harcban alulmaradtam, de a falu gyógyítója megmentett.";
+        dialogueController.GetComponent<Dialogue_Controller>().DisplayText(textToDisplay);
+    }
+
+    //Frissíti a HUD élet és xp státuszát
+    void RefreshHUD()
+    {
+        LvlText.text = player.character.GetLevelText();
+        HPStatus.text = player.character.GetCurrentHP().ToString() + "/" + player.character.GetMaxHP().ToString();
+        LvlStatus.text = player.character.GetCurrentXP().ToString() + "/" + player.character.GetMaxXP().ToString();
+
+        playerHPSlider.value = player.character.GetCurrentHP();
+        playerHPSlider.maxValue = player.character.GetMaxHP();
+        playerXpSlider.value = player.character.GetCurrentXP();
+        playerXpSlider.maxValue = player.character.GetMaxXP();
+    }
 
 }

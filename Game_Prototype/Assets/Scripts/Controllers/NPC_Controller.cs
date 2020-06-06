@@ -4,20 +4,24 @@ using UnityEngine;
 
 public class NPC_Controller : MonoBehaviour
 {
+    public string characterName;
 	public Character character;
 	bool actionRange;
     Data_Controller dataController;
+    public CharacterDialogues dialogues;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         dataController = GameObject.Find("Data").GetComponent<Data_Controller>();
         actionRange = false;
-    }
+        
+        if(dialogues != null)
+            this.dialogues.ResetIndex();
 
-    // Update is called once per frame
-    void Update()
-    {
+        if(character != null)
+            this.characterName = character.characterName;
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -25,7 +29,7 @@ public class NPC_Controller : MonoBehaviour
     	if(col.gameObject.name == "Player")
         {
     		actionRange = true;
-            dataController.interactableCharacter = this;
+            dataController.AddNPC(this);
         }
     }
 
@@ -34,13 +38,25 @@ public class NPC_Controller : MonoBehaviour
     	if(col.gameObject.name == "Player")
     	{
     		actionRange = false;
-            dataController.interactableCharacter = null;
+            dataController.RemoveNPC();
     	}
     }
 
     public bool InRange()
     {
         return this.actionRange;
+    }
+
+    //Dialógus lejátszása
+    public void TriggerDialogue()
+    {
+        if(dialogues != null)
+            FindObjectOfType<Dialogue_Controller>().StartDialogue(this);
+    }
+
+    public void NextDialogue()
+    {
+        this.dialogues.IncreaseIndex();
     }
 
 }

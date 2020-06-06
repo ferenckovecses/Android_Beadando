@@ -1,25 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class IngameMenu_Controller : MonoBehaviour
 {
 	public GameObject menuPrefab;
-	Game_Controller gameController;
+    GameState_Controller gameState;
 	bool dispalyed = false;
 	GameObject menuUI;
 
-    //Kreálunk egy gameController referenciát
+    //Kreálunk egy GameState referenciát
     void Start()
     {
-        gameController = GameObject.Find("Game").GetComponent<Game_Controller>();
+        gameState = GameObject.Find("GameState").GetComponent<GameState_Controller>();
     }
 
     void Update()
     {
-        //Ha Ingame menü fázisban vagyunk és még nincs megjelenítve a menü
-        if(gameController.currentState == GameState.IngameMenu && dispalyed == false)
+        //Ha menü fázisban vagyunk és még nincs megjelenítve a menü
+        if(gameState.GetGameState() == GameState.IngameMenu && dispalyed == false)
         {
         	DisplayMenu();
         }
@@ -60,20 +59,21 @@ public class IngameMenu_Controller : MonoBehaviour
     public void BackToGame()
     {
         HideMenu();
-        gameController.currentState = GameState.Outworld;
+        gameState.ChangeGameState(GameState.Outworld);
     }
 
     //Elmenti a játékot
     public void SaveGame()
     {
-    	gameController.SaveGame();
+    	GameObject.Find("Game").GetComponent<Game_Controller>().SaveGame();
     }
 
-    //Visszalép a főmenübe
+    //Visszalép a főmenübe miután feltakarított maga után
     public void MainMenu()
     {
         HideMenu();
-    	gameController.CleanUp();
-    	gameController.currentState = GameState.MainMenu;
+        Destroy(GameObject.Find("Data"));
+        Destroy(GameObject.Find("GameState"));
+    	SceneManager.LoadScene("MainMenu");
     }
 }
